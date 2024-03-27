@@ -92,8 +92,8 @@ def details(request, book_id):
 
     return render(request, 'details.html', {
         'book': book,
-        'authors': [{'id': item[0], 'name': item[1]} for item in book.authors.values_list('id', 'name')],
-        'categories': [{'id': item[0], 'name': item[1]} for item in book.categories.values_list('id', 'name')]
+        'auths': [{'id': item[0], 'name': item[1]} for item in book.authors.values_list('id', 'name')],
+        'cates': [{'id': item[0], 'name': item[1]} for item in book.categories.values_list('id', 'name')]
     })
 
 
@@ -113,8 +113,7 @@ def cart(request):
 
 def add_to_cart(request):
     if request.method == 'POST':
-        cart_key = 'cart'
-        cart = request.session.get(cart_key, {})
+        cart = request.session.get(settings.CART_KEY, {})
 
         data = json.loads(request.body.decode('utf-8'))
         id = str(data.get("id"))
@@ -130,6 +129,22 @@ def add_to_cart(request):
                 # "max_quantity": dao.get_book_inventory(id).quantity
             }
 
-        request.session[cart_key] = cart
+        request.session[settings.CART_KEY] = cart
 
         return JsonResponse(cp.count_cart(request))
+
+
+def alter_cart(request, book_id):
+    cart = request.session.get(settings.CART_KEY, {})
+
+    if cart and book_id in cart:
+        if request.method == 'PUT':
+            cart[book_id]['quantity'] = (
+                int(json.loads(request.body.decode('utf-8')).get('quantity')))
+
+        if request.method == 'DELETE':
+            del cart[book_id]
+
+    request.session[settings.CART_KEY] = cart
+
+    return JsonResponse(cp.count_cart(request))

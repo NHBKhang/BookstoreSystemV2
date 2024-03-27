@@ -1,4 +1,5 @@
 from core.models import Category
+from bookstore import settings
 
 
 def categories(request):
@@ -10,11 +11,10 @@ def categories(request):
 def count_cart(request):
     total_amount, total_quantity = 0, 0
 
-    cart = request.session.get('cart')
+    cart = request.session.get(settings.CART_KEY)
 
     if cart:
         for i, c in cart.items():
-            print(i, c)
             total_quantity += int(c['quantity'])
             total_amount += int(c['quantity']) * int(c['price'])
 

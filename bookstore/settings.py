@@ -35,6 +35,8 @@ MEDIA_ROOT = '%s/courses/static/' % BASE_DIR
 
 PAGE_SIZE = 8
 
+CART_KEY = 'cart'
+
 import cloudinary
 
 cloudinary.config(

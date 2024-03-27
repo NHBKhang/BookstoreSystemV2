@@ -16,10 +16,11 @@ urlpatterns = [
     path('api/', include(r.urls)),
     path('', views.index, name='home'),
     path('books/', views.pages, name='books'),
-    path('books/<int:book_id>', views.details, name='details'),
+    path('books/<int:book_id>/', views.details, name='details'),
     path('login/', views.login, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('register/', views.register, name='register'),
     path('cart/', views.cart, name='cart'),
     path('api/cart/', views.add_to_cart, name='add_to_cart'),
+    path('api/cart/<str:book_id>/', views.alter_cart, name='alter_cart')
 ]

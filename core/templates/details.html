@@ -7,7 +7,7 @@
         <div class="row d-flex justify-content-between">
             <div class="col-md-4 p-1" style="border: 1px solid black; border-radius: 5px">
                 <img title="{{ book.name }}" class="card-img-top" src="{{ book.image }}" alt="{{ book.name }}<">
-                {% for a in authors %}
+                {% for a in auths %}
                     <h6 title="{{ a.name }}" class="details-item mt-3">Tác giả: <span
                             class="details-text">{{ a.name }}</span></h6>
                 {% endfor %}
@@ -15,7 +15,7 @@
                     <span
                             class="details-text">{{ book.published_date}}</span></h6>
                 <h6 class="details-item mt-2">Thể loại:
-                    {% for c in categories %}
+                    {% for c in cates %}
                         <a title="{{ c.name }}" href="/?cate_id={{ c.id }}"
                            class="pe-0 cate">{{ c.name }}</a>
                         {% if not forloop.last %}

@@ -31,7 +31,8 @@ function updateCart(bookId, obj) {
             "quantity": obj.value
         }),
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "X-CSRFToken": getCookie('csrftoken')
         }
     }).then(res => res.json()).then(data => {
         let d = document.getElementsByClassName('cart-counter')
@@ -49,7 +50,10 @@ function updateCart(bookId, obj) {
 function deleteCart(bookId) {
     if (confirm("Bạn chắc chắn xóa không?") == true) {
         fetch(`/api/cart/${bookId}/`, {
-            method: "delete"
+            method: "delete",
+            headers: {
+                "X-CSRFToken": getCookie('csrftoken')
+            }
         }).then(res => res.json()).then(data => {
             let d = document.getElementsByClassName('cart-counter')
             for (let i = 0; i < d.length; i++)
