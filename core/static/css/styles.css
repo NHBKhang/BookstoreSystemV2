@@ -1,0 +1,187 @@
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.header {
+    background: linear-gradient(to bottom right, yellow 25%, greenyellow 50%, yellowgreen);
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-name {
+    color: blue;
+    margin: 0;
+    padding: 0;
+    font-size: 3.5rem;
+    font-family: logo-font;
+}
+
+.logo {
+    margin: -5px 5px 10px;
+}
+
+#return > button {
+    font-size: 2.5rem !important;
+    color: rgb(75, 75, 243);
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    display: inline;
+    padding: 0 35px 50px 10px !important;
+    background-color: rgb(200, 200, 200, 0.75);
+    opacity: 0.8;
+    text-align: justify;
+    text-shadow: 3px 1px lightskyblue;
+    z-index: 1000;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin: .75rem;
+}
+
+a.normal {
+    color: black !important;
+}
+
+a.dropdown-item:hover {
+    background: grey !important;
+}
+
+.card:hover {
+    background-color: rgb(0, 0, 0, .05);
+    z-index: 100;
+}
+
+#return > button:hover {
+    background-color: rgb(205, 220, 220);
+    color: dodgerblue;
+}
+
+@font-face {
+    font-family: logo-font;
+    src: url(../font/monster.ttf);
+}
+
+.card-title {
+    width: 100%;
+    height: 3.5rem;
+    overflow: hidden;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.card-title:hover {
+    color: blue;
+}
+
+.card-img-top {
+    object-fit: cover;
+}
+
+.card-footer {
+    width: 100%;
+    margin: 0;
+    padding: 3px;
+}
+
+.btn {
+    font-size: 1rem;
+    padding: 5px;
+}
+
+/*tag*/
+html {
+    scroll-behavior: smooth;
+}
+
+.social-icon li a i {
+    margin-right: .5rem;
+}
+
+.btn.btn-primary.icon {
+    width: 40px;
+    height: 35px;
+}
+
+.avatar-img {
+    height: 35px;
+    margin: 0 1px;
+    padding: 0;
+}
+
+.bg-blue {
+    background: #033C73;
+}
+
+/*body*/
+.btn.all {
+    padding: 25px 0 0;
+}
+
+.btn.all:hover {
+    color: #1DA1F2;
+}
+
+/*footer*/
+footer .container a:hover > .fa-brands.fa-facebook {
+    color: #385898;
+    background: radial-gradient(circle at center, #faf9f9 10%, #faf9f9 64%, #faf9f9 47%, rgba(27, 27, 27, 1.00) 47%, rgba(27, 27, 27, 1.00) 48%);
+}
+
+footer .container a:hover > .fa-brands.fa-twitter {
+    color: #1DA1F2;
+}
+
+footer .container a:hover > .fa-brands.fa-instagram {
+    background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+}
+
+footer .container a:hover > .fa-brands.fa-youtube {
+    color: red;
+    background: radial-gradient(ellipse at center, #faf9f9 0%, #faf9f9 47%, #faf9f9 47%, rgba(27, 27, 27, 1.00) 47%, rgba(27, 27, 27, 1.00) 48%);
+}
+
+@media screen and (max-width: 600px) {
+    .card-title {
+        font-size: .75rem !important;
+        height: 30px;
+    }
+
+    .card-text {
+        font-size: .7rem !important;
+    }
+}
+
+@media screen and (max-width: 766px) {
+    .card-title {
+        height: 2.5rem;
+        font-size: 1rem !important;
+    }
+
+    .card-footer {
+        padding: 1px;
+    }
+
+    .card-text {
+        font-size: .8rem !important;
+    }
+
+    .btn {
+        padding: 5px;
+        margin: 2px;
+    }
+}
+@media screen and (max-width: 1000px) {
+    .btn.btn-danger {
+        font-size: .9rem;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .btn.btn-danger {
+        font-size: .9rem;
+    }
+}

@@ -1,10 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'layout/base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+<br>
+<section class="container">
+    <br>
+    <div class="d-flex justify-content-between" style="background: whitesmoke">
+        <h1 class="tw-text-3xl">Mới tải lên</h1>
+        <a class="btn all" href="books/?page=1&cate_id={{ cate_id }}&kw={{ kw }}">Xem tất cả
+            <i style="font-size: .75em" class="fa-solid fa-play fa-fw ms-1"></i></a>
+    </div>
+
+    <div class="d-flex row justify-content-center align-items-center flex-wrap p-0"
+         style="background: whitesmoke">
+        {% for b in books %}
+        <div class="card mb-2 col-sm-6 col-md-3">
+            <a class="normal" href="/books/{{ b.id }}">
+                <div>
+                    <img title="{{ b.name }}" class="card-img-top h-100" src="{{ b.image }}"
+                         alt="Card image">
+                </div>
+                <div class="card-body">
+                    <h4 title="{{ b.name }}" class="card-title text-black w-100">{{ b.name }}</h4>
+                    {% load humanize %}
+                    <p title="{{ b.price|intcomma }} VNĐ"
+                    class="card-text text-black">{{ b.price|intcomma }} VNĐ</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+</section>
+
+<br>
+
+{% endblock %}
+

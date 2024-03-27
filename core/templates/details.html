@@ -1,0 +1,86 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+    <h1 class="text-center text-success m-5">CHI TIẾT SẢN PHẨM</h1>
+
+    <div class="container">
+        <div class="row d-flex justify-content-between">
+            <div class="col-md-4 p-1" style="border: 1px solid black; border-radius: 5px">
+                <img title="{{ book.name }}" class="card-img-top" src="{{ book.image }}" alt="{{ book.name }}<">
+                {% for a in authors %}
+                    <h6 title="{{ a.name }}" class="details-item mt-3">Tác giả: <span
+                            class="details-text">{{ a.name }}</span></h6>
+                {% endfor %}
+                <h6 title="{{ book.published_date }}" class="details-item mt-2">Ngày phát hành:
+                    <span
+                            class="details-text">{{ book.published_date}}</span></h6>
+                <h6 class="details-item mt-2">Thể loại:
+                    {% for c in categories %}
+                        <a title="{{ c.name }}" href="/?cate_id={{ c.id }}"
+                           class="pe-0 cate">{{ c.name }}</a>
+                        {% if not forloop.last %}
+                            <span class="m-0 p-0">, </span>
+                        {% endif %}
+                    {% endfor %}
+                </h6>
+            </div>
+            {% load humanize %}
+            <div class="details-info col-md-7">
+                <h1 title="{{ book.name }}" class="details-title m-2 mt-3">{{ book.name }}</h1>
+                <p title="{{ book.description }}" class="details-description m-2 mb-5">{{ book.description }}</p>
+                <h3 title="{{ book.price|intcomma }}"
+                    class="details-price text-danger">{{ book.price|intcomma }} VNĐ</h3>
+                <div class="d-flex mt-3">
+                    <a href="" onclick=""
+                       class="btn btn-primary m-1" style="font-size: 1.1rem">💳 Mua sách</a>
+                    <a href="" onclick="addToCart('{{ book.id }}', '{{ book.name }}', '{{ book.price }}')"
+                       class="btn btn-danger m-1" style="font-size: 1.1rem">&#128722; Thêm vào giỏ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m-2">
+        <hr/>
+        {% if current_user.is_authenticated %}
+            <div class="m-1">
+                    <textarea class="form-control" rows="3" id="comment" placeholder="Nội dung bình luận..."
+                              name="content" value=""></textarea>
+                <button type="submit" class="btn btn-success mt-1" onclick="addComment({{ book.id }})">Bình luận
+                </button>
+            </div>
+        {% else %}
+            <p class=" ms-5">Vui lòng
+                <a class="text-info lg" href="/login?next=/products/{{ book.id }}">đăng nhập</a> để bình luận!</p>
+        {% endif %}
+        <hr/>
+
+        <div class="spinner-grow text-primary spinner"></div>
+
+        <ul class="list-group mt-2" id="comments">
+
+        </ul>
+    </div>
+
+    <style>
+        a.lg:hover {
+            text-decoration: underline;
+        }
+        .cate {
+            color: black;
+            margin-right: -4px;
+        }
+        .cate:hover {
+            color: #1DA1F2;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+    <script src="../static/js" type="text/javascript" rel="stylesheet"></script>
+    <script src="../static/js" type="text/javascript" rel="stylesheet"></script>
+    <script>
+        window.onload = function () {
+            loadComments('{{ book.id }}')
+        }
+    </script>
+
+{% endblock %}

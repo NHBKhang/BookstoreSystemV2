@@ -33,6 +33,8 @@ AUTH_USER_MODEL = 'core.User'
 
 MEDIA_ROOT = '%s/courses/static/' % BASE_DIR
 
+PAGE_SIZE = 8
+
 import cloudinary
 
 cloudinary.config(
@@ -54,6 +56,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'rest_framework',
+    'django.contrib.humanize'
 ]
 
 MIDDLEWARE = [
@@ -79,6 +82,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.utils.context_processors.categories',
+                'core.utils.context_processors.count_cart'
             ],
         },
     },

@@ -51,11 +51,11 @@ class Book(models.Model):
     name = models.CharField(max_length=255, unique=True)
     active = models.BooleanField(default=True)
     description = models.TextField(null=True, blank=True)
-    image = CloudinaryField(null=True, blank=True)
+    image = models.TextField(null=True, blank=True)
     price = models.IntegerField(null=True, blank=True)
     published_date = models.DateField(null=True, blank=True)
-    categories = models.ManyToManyField(Category)
-    authors = models.ManyToManyField(Author)
+    categories = models.ManyToManyField(Category, related_name='books')
+    authors = models.ManyToManyField(Author, related_name='books')
     inventories = models.ManyToManyField(Inventory, through='Book_Inventories', related_name='books')
 
     def __str__(self):
@@ -66,3 +66,10 @@ class Book_Inventories(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE)
     quantity = models.IntegerField()
+
+    class Meta:
+        verbose_name = "books belong to inventories"
+        verbose_name_plural = "books belong to inventories"
+
+    def __str__(self):
+        return self.book.name + " thuộc kho " + self.inventory.name

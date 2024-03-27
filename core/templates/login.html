@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+    <link rel="icon" href="../static/img/logo_book.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/76334962e6.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="../static/css/login.css">
+    <link rel="stylesheet" href="../static/css/anim.css">
+    <script type="text/javascript" src="../static/js/scripts.js"></script>
+</head>
+<body>
+<div class="min-vh-100 d-flex align-items-center">
+    <div class="container">
+        <div class="d-flex button-group fadeInDown">
+            <button title="Về trang trước" id="back" type="button" onclick="javascript:history.back()"><i
+                    class="fa-solid fa-arrow-left"></i></button>
+            <button title="Về trang chủ" id="home" type="button"><a href="/"><i class="fa-solid fa-house"></i></a>
+            </button>
+        </div>
+        <div class="row second fadeInDown">
+            <div class="col-sm-7 mx-auto">
+                <div class="shadow-lg">
+                    <div class="d-flex align-items-center">
+                        <div class="d-none d-md-block d-lg-block fadeIn first">
+                            <img class="objectFit" src="../static/img/login.jpg"/>
+                        </div>
+                        <div class="p-4" id="formPanel">
+                            <div class="text-center mb-5">
+                                <h1 class="customHeading h3 text-uppercase fadeIn first">Đăng nhập</h1>
+                            </div>
+                            <form method="post">
+                                <div title="Nhập tên tài khoản" class="custom-form-group fadeIn second was-validated">
+                                    <label class="text-uppercase" for="username">Tên tài khoản</label>
+                                    <input type="text" id="username" class="pb-1" name="username" required/><span
+                                        class="pb-1"><i
+                                        class="fas fa-user"></i></span>
+                                    <div class="valid-feedback error">Hợp lệ.</div>
+                                    <div class="invalid-feedback error">Vui lòng điền vào trường trên.</div>
+                                </div>
+                                <div title="Nhập mật khẩu" class="custom-form-group mt-3 fadeIn second was-validated">
+                                    <label class="text-uppercase" for="password">Mật khẩu</label>
+                                    <input type="password" id="password" class="pb-1" name="password" required/><span
+                                        class="pb-1"><i
+                                        class="fas fa-eye-slash" onclick="showPassword(event)"></i></span>
+                                    <div class="valid-feedback error">Hợp lệ.</div>
+                                    <div class="invalid-feedback error">Vui lòng điền vào trường trên.</div>
+                                </div>
+                                {% if err_acc %}
+                                <div id="error">Tài khoản hoặc mật khẩu của bạn không chính xác. Vui lòng nhập lại.
+                                </div>
+                                {% endif %}
+                                <div class="custom-text mt-4 mb-2 ms-1 fadeIn third">Bạn chưa có tài khoản? <a
+                                        href="/register">Đăng ký</a>
+                                </div>
+                                <div class="mt-5 fadeIn fourth">
+                                    <button type="submit" class="w-100 p-2 d-block custom-btn">Đăng nhập</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

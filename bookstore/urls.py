@@ -15,8 +15,28 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path, include
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Bookstore API",
+        default_version='v1',
+        description="APIs for BookstoreApp",
+        contact=openapi.Contact(email="nhbkhang12@ou.edu.vn"),
+        license=openapi.License(name="Nguyễn Hà Bảo Khang@2024"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
+    path('', include('core.urls')),
     path('admin/', admin.site.urls),
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    re_path(r'^redoc/$',
+            schema_view.with_ui('redoc', cache_timeout=0),
+            name='schema-redoc')
 ]

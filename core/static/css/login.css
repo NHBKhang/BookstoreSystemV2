@@ -1,0 +1,111 @@
+.customHeading {
+    color: #30c6b0;
+}
+
+.custom-form-group label {
+    color: #30c6b0;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.custom-form-group span {
+    width: 32px;
+    border-bottom: 1px solid #30c6b0;
+    vertical-align: middle;
+    color: #30c6b0;
+    display: inline;
+}
+
+.custom-form-group input {
+    width: calc(100% - 32px);
+    border: none;
+    border-bottom: 1px solid #30c6b0;
+    box-sizing: content-box;
+    outline: none;
+}
+
+.custom-btn {
+    border-radius: 32px;
+    background: #30c6b0;
+    border: 2px solid transparent;
+    color: #fff;
+    height: 48px;
+}
+
+.custom-btn:hover {
+    background: #fff;
+    border: none;
+    border: 2px solid #30c6b0;
+    color: #30c6b0;
+}
+
+#formPanel {
+    min-width: 280px;
+    max-width: 320px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.objectFit {
+    object-fit: cover;
+    width: 100%;
+    max-width: 750px;
+    min-height: 60vh;
+    margin: 0 auto
+}
+
+@media screen and (max-width: 1000px) {
+    .objectFit {
+        display: none;
+    }
+}
+
+#showCursor {
+    cursor: pointer
+}
+
+.custom-text {
+    color: darkslategrey;
+    font-size: .9em;
+    margin: auto;
+}
+
+.custom-text a {
+    text-decoration: underline !important;
+    color: darkslategrey;
+}
+
+.custom-text a:hover {
+    color: #1DA1F2;
+    text-decoration: none !important;
+}
+
+.button-group {
+    justify-content: space-between;
+}
+
+.button-group button {
+    border: 2px solid #30c6b0;
+    border-radius: .3rem;
+}
+
+.button-group button i {
+    color: #30c6b0 !important;
+    font-size: 1.2rem;
+    padding: .25rem;
+}
+
+.button-group button:hover {
+    background: #30c6b0
+}
+
+.button-group button i:hover {
+    color: white !important;
+}
+
+#error {
+    font-size: .9rem;
+    color: darkred;
+    margin-top: 10px;
+}

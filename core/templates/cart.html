@@ -1,0 +1,60 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+    <div class="m-1">
+        <h1 class="text-center text-success m-4">GIỎ HÀNG</h1>
+
+        {% if cart %}
+            <table class="table" id="cartTable">
+                <tr>
+                    <th>Mã sản phẩm</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th></th>
+                </tr>
+                {% for i, c in cart.items %}
+                    {% load humanize %}
+                    <tr id="cart{{ c.id }}">
+                        <td>{{ c.id }}</td>
+                        <td>{{ c.name }}</td>
+                        <td>{{ c.price|intcomma }} VNĐ</td>
+                        <td>
+                            <input type="number" value="{{ c.quantity }}" onblur="updateCart('{{ c.id }}', this)"
+                                   class="form-control" min="1" max="{{ c.max_quantity }}"/>
+                        </td>
+                        <td>
+                            <input type="button" value="X" onclick="deleteCart('{{ c.id }}', this)" class="btn btn-danger"
+                                   style="width: 35px;height: 35px"/>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <div class="alert alert-info">
+                <h3>Tổng sản phẩm: <span class="cart-counter">{{ total_quantity }}</span></h3>
+                <h3>Tổng tiền: <span class="cart-amount">{{ total_amount|intcomma }} VNĐ</span></h3>
+            </div>
+
+            <div class="ms-2">
+                {% if current_user.is_authenticated %}
+                    <a class="btn btn-success" href="/payment">Thanh toán</a>
+                {% else %}
+                    <p>Vui lòng <a class="lg" href="">đăng nhập</a> để thanh toán!</p>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="alert alert-warning container">KHÔNG có sản phẩm nào trong giỏ!</div>
+        {% endif %}
+    </div>
+
+    <style>
+        a.lg {
+            color: blue
+        }
+
+        a.lg:hover {
+            color: #5fbae9
+        }
+    </style>
+{% endblock %}

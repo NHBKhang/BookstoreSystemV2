@@ -1,6 +1,7 @@
 from django.contrib import admin
-from core.models import Author, Category, Inventory, Book
+from core.models import Author, Category, Inventory, Book, User, Book_Inventories
 from core.forms import BookForm
+from django.utils.html import mark_safe
 
 
 class BookAdmin(admin.ModelAdmin):
@@ -12,10 +13,12 @@ class BookAdmin(admin.ModelAdmin):
 
     def my_image(self, book):
         if book.image:
-            return mark_safe(f"<img width='200' src='{book.image.url}' />")
+            return mark_safe(f"<img width='200' src='{book.image}' />")
 
 
+admin.site.register(User)
 admin.site.register(Category)
 admin.site.register(Author)
 admin.site.register(Inventory)
+admin.site.register(Book_Inventories)
 admin.site.register(Book, BookAdmin)
