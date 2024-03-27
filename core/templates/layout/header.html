@@ -20,7 +20,8 @@
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Thể loại</a>
                     <ul style="column-count: 3" class="dropdown-menu bg-dark">
                         {% for c in categories %}
-                            <li><a class="dropdown-item text-white" href="/books/?page=1&cate_id={{ c.id }}&kw=">{{ c.name }}</a></li>
+                        <li><a class="dropdown-item text-white" href="/books/?page=1&cate_id={{ c.id }}&kw=">
+                            {{ c.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>
@@ -36,25 +37,29 @@
                         <button class="btn btn-primary icon" type="submit"><i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </form>
-                    {% if current_user.is_authenticated %}
-                        <div class="dropdown bg-dark">
-                            <button type="button" class="btn btn-dark dropdown-toggle ms-1" data-bs-toggle="dropdown">
-                                <img title="Hồ sơ" class="avatar-img" alt="avatar"
-                                     src="">
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" href="/my_orders">Đơn hàng của tôi</a>
-                                </li>
-                                <li class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item" href="/logout">Đăng xuất</a>
-                                </li>
-                            </ul>
-                        </div>
+                    {% if user.is_authenticated %}
+                    <div class="dropdown bg-dark">
+                        <button type="button" class="btn btn-dark dropdown-toggle ms-1" data-bs-toggle="dropdown">
+                            <img title="Hồ sơ" class="avatar-img" alt="avatar"
+                                 src="{{ user.avatar.url }}">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="/my_orders">Đơn hàng của tôi</a>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="/logout/">
+                                    {% csrf_token %}
+
+                                    <button type="submit" class="dropdown-item">Đăng xuất</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                     {% else %}
-                        <a style="width: 35px" title="Đăng nhập" href="/login" class="btn btn-primary icon ms-2 me-2">
-                            <i class="fa-solid fa-user"></i></a>
+                    <a style="width: 35px" title="Đăng nhập" href="/login" class="btn btn-primary icon ms-2 me-2">
+                        <i class="fa-solid fa-user"></i></a>
                     {% endif %}
                 </div>
             </div>

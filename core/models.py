@@ -12,7 +12,8 @@ class Gender(enum.Enum):
 
 
 class User(AbstractUser):
-    avatar = CloudinaryField(null=True)
+    avatar = CloudinaryField(null=True,
+        default="https://res.cloudinary.com/dd0qzygo7/image/upload/v1711539545/gyaplslq1shp2exulcia.png")
     birthday = models.DateField(null=True)
     gender = enum.EnumField(Gender, default=Gender.MALE)
     phone = models.CharField(max_length=11, null=True)
@@ -73,3 +74,10 @@ class Book_Inventories(models.Model):
 
     def __str__(self):
         return self.book.name + " thuộc kho " + self.inventory.name
+
+
+class Comment(models.Model):
+    content = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)

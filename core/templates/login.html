@@ -38,6 +38,8 @@
                                 <h1 class="customHeading h3 text-uppercase fadeIn first">Đăng nhập</h1>
                             </div>
                             <form method="post">
+                                {% csrf_token %}
+
                                 <div title="Nhập tên tài khoản" class="custom-form-group fadeIn second was-validated">
                                     <label class="text-uppercase" for="username">Tên tài khoản</label>
                                     <input type="text" id="username" class="pb-1" name="username" required/><span

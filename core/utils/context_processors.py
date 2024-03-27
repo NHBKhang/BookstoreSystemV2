@@ -1,3 +1,5 @@
+import datetime
+
 from core.models import Category
 from bookstore import settings
 
@@ -23,3 +25,8 @@ def count_cart(request):
         "total_quantity": total_quantity
     }
 
+
+def today(request):
+    return {
+        'today': datetime.datetime.now()
+    }

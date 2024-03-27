@@ -28,10 +28,10 @@
             {% endfor %}
         </div>
         <ul style="justify-content: center" class="pagination mt-1 d-flex">
-            {% for i in pages|ljust:pages %}
+            {% for i in pages %}
                 <li class="page-item">
                     <a class="page-link"
-                       href="/books/?page={{ i }}&cate_id={{ cate_id }}&kw={{ kw }}">{{ i }}</a>
+                       href="/books/?page={{ i }}&cate_id={{ request.GET.cate_id }}&kw={{ request.GET.kw }}">{{ i }}</a>
                 </li>
             {% endfor %}
         </ul>

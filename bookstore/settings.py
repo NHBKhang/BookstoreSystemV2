@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+
 CKEDITOR_UPLOAD_PATH = "ckeditor/images"
 
 AUTH_USER_MODEL = 'core.User'
@@ -85,7 +89,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'core.utils.context_processors.categories',
-                'core.utils.context_processors.count_cart'
+                'core.utils.context_processors.count_cart',
+                'core.utils.context_processors.today',
             ],
         },
     },

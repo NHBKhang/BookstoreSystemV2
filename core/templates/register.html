@@ -13,8 +13,9 @@
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/76334962e6.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="../static/css/login.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../static/css/register.css">
     <link rel="stylesheet" type="text/css" media="screen" href="../static/css/anim.css">
+    <script type="text/javascript" src="../static/js/scripts.js"></script>
 </head>
 <body style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp'); background-size: auto">
 <section class="vh-100 bg-image">
@@ -30,14 +31,17 @@
                     <div class="card" style="border-radius: 15px;">
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5">ĐĂNG KÝ TÀI KHOẢN MỚI</h2>
-                            <form class="was-validated" action="/register" method="post">
+                            <form class="was-validated" action="/register/" method="post">
+                                {% csrf_token %}
                                 <div>
+
                                     <div class="form-outline mb-4">
                                         <label class="form-label" for="username">Tên tài khoản</label>
                                         <input type="text" id="username" class="form-control form-control-lg"
                                                name="username" required/>
                                         <div class="invalid-feedback">*</div>
                                     </div>
+
                                     <div class="form-outline mb-4">
                                         <label class="form-label" for="password">Mật khẩu</label>
                                         <input type="password" id="password" class="form-control form-control-lg"
@@ -46,35 +50,43 @@
                                                  onclick="showPassword(event)"></i></span>
                                         <div class="invalid-feedback">*</div>
                                     </div>
+
                                     <div class="form-outline mb-4">
-                                        <label class="form-label" for="confirm-password">Nhập lại mật khẩu</label>
-                                        <input type="password" id="confirm-password"
-                                               class="form-control form-control-lg" name="confirm-password" required/>
+                                        <label class="form-label" for="confirm_password">Nhập lại mật khẩu</label>
+                                        <input type="password" id="confirm_password"
+                                               class="form-control form-control-lg" name="confirm_password" required/>
                                         <span><i style="cursor: pointer" class="fas fa-eye-slash"
                                                  onclick="showPassword(event, 'confirm-password')"></i></span>
                                         <div class="invalid-feedback">*</div>
                                     </div>
+
                                 </div>
+
                                 <div style="justify-content: space-between" class="d-flex w-100 mb-4">
+
                                     <div style="width: 67%" class="form-outline">
-                                        <label class="form-label" for="lastname">Họ</label>
-                                        <input type="text" id="lastname" class="form-control form-control-lg"
-                                               name="first-name" required/>
+                                        <label class="form-label" for="last_name">Họ</label>
+                                        <input type="text" id="last_name" class="form-control form-control-lg"
+                                               name="last_name" required/>
                                         <div class="invalid-feedback">*</div>
                                     </div>
+
                                     <div style="width: 30%" class="form-outline">
-                                        <label class="form-label" for="firstname">Tên</label>
-                                        <input type="text" id="firstname" class="form-control form-control-lg"
-                                               name="last-name" required/>
+                                        <label class="form-label" for="first_name">Tên</label>
+                                        <input type="text" id="first_name" class="form-control form-control-lg"
+                                               name="first_name" required/>
                                         <div class="invalid-feedback">*</div>
                                     </div>
+
                                 </div>
+
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="birthday">Ngày sinh</label>
                                     <input type="date" id="birthday" class="form-control form-control-lg"
-                                           name="birthday" max="{{ today }}" required/>
+                                           name="birthday" max="{{ today|date:'Y-m-d' }}" required/>
                                     <div class="invalid-feedback">*</div>
                                 </div>
+
                                 <div class="form-outline d-flex mb-4">
                                     <label class="me-2 form-label">Giới tính</label>
                                     <div class="ms-1 me-1">
@@ -91,25 +103,36 @@
                                                value="2">
                                         <label for="female">Nữ</label>
                                     </div>
+                                    <div class="ms-1 me-1">
+                                        <input type="radio"
+                                               id="other"
+                                               name="gender"
+                                               value="3">
+                                        <label for="other">Khác</label>
+                                    </div>
                                 </div>
+
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="username">Số điện thoại</label>
                                     <input type="tel" id="phone" class="form-control form-control-lg"
                                            name="phone" pattern="(?:7|0\d|\+94\d)\d{8}" required/>
                                     <div class="invalid-feedback">*</div>
                                 </div>
+
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="email">Email</label>
                                     <input type="email" id="email" class="form-control form-control-lg"
                                            name="email" required/>
                                     <div class="invalid-feedback">*</div>
                                 </div>
+
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="address">Địa chỉ</label>
                                     <input type="text" id="address" class="form-control form-control-lg"
                                            name="address" required/>
                                     <div class="invalid-feedback">*</div>
                                 </div>
+
                                 <div class="form-check d-flex justify-content-center mb-3">
                                     <input class="form-check-input me-2" type="checkbox" value="agree"
                                            id="agreement-check" required/>
@@ -118,7 +141,21 @@
                                         vụ</u></a>
                                     </label>
                                 </div>
-                                <div class="d-flex justify-content-center mb-3" id="error">{{ err_msg }}</div>
+
+                                <div class="rounded-xl text-danger d-flex justify-content-center mb-3 error">
+                                    <p>{{ error_msg }}</p>
+
+                                    {% if form.errors %}
+                                    {% for field in form %}
+                                    {% for error in field.errors %}
+                                    <div class="rounded-xl text-danger d-flex justify-content-center mb-3 error">
+                                        <p>{{ error|escape }}</p>
+                                    </div>
+                                    {% endfor %}
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+
                                 <div class="d-flex justify-content-center">
                                     <button type="submit"
                                             class="btn btn-info btn-block btn-lg gradient-custom-4 text-body">

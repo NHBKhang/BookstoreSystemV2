@@ -1,13 +1,15 @@
+from datetime import datetime
 from rest_framework import viewsets, generics, status, parsers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from core import serializers, paginators, dao
-from core.models import Category, User, Author, Inventory, Book, Book_Inventories
+from core.models import Category, User, Author, Inventory, Book, Book_Inventories, Gender
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 import math, json
 from bookstore import settings
 from core.utils import context_processors as cp
+from django.contrib.auth import login
 
 
 class CategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
@@ -83,7 +85,7 @@ def pages(request):
 
     return render(request, 'pages.html', {
         'books': books,
-        'pages': math.ceil(books.count() / settings.PAGE_SIZE)
+        'pages': range(1, math.ceil(dao.books_count(cate_id=cate_id, kw=kw) / settings.PAGE_SIZE) + 1)
     })
 
 
@@ -97,11 +99,47 @@ def details(request, book_id):
     })
 
 
-def login(request):
-    return render(request, 'login.html')
-
-
 def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        birthday = request.POST['birthday']
+        gender_val = request.POST['gender']
+        phone = request.POST['phone']
+        email = request.POST['email']
+        address = request.POST['address']
+
+        try:
+            if password != confirm_password:
+                raise Exception('Passwords do not match.')
+
+            if int(gender_val) == 1:
+                gender = Gender.MALE
+                avatar = 'https://res.cloudinary.com/dd0qzygo7/image/upload/v1711539545/gyaplslq1shp2exulcia.png'
+            elif int(gender_val) == 2:
+                gender = Gender.FEMALE
+                avatar = 'https://res.cloudinary.com/dd0qzygo7/image/upload/v1711551474/t0cra9qee3xq04yywsns.png'
+            else:
+                gender = Gender.OTHER
+                avatar = 'https://res.cloudinary.com/dd0qzygo7/image/upload/v1711539545/gyaplslq1shp2exulcia.png'
+
+            user = (User.objects
+                    .create_user(username=username, password=password, first_name=first_name,
+                                 last_name=last_name, birthday=birthday, gender=gender,
+                                 phone=phone, email=email, avatar=avatar,
+                                 address=address, last_login=datetime.now(), date_joined=datetime.now()))
+            user.save()
+
+            login(request, user)
+
+            return redirect('home')
+        except Exception as e:
+            return render(request, 'register.html', {
+                'error_msg': e.__str__()})
+
     return render(request, 'register.html')
 
 
@@ -148,3 +186,50 @@ def alter_cart(request, book_id):
     request.session[settings.CART_KEY] = cart
 
     return JsonResponse(cp.count_cart(request))
+
+
+def payment(request):
+    return render(request, 'payment.html')
+
+
+def comments(request, book_id):
+    if request.method == 'POST':
+        comment = json.loads(request.body.decode('utf-8'))
+
+        if comment['content'] == '':
+            return JsonResponse({'status': 501})
+
+        try:
+            c = dao.save_comment(book_id=book_id, content=comment['content'], user_id=request.user.id)
+        except Exception as e:
+            print(e)
+            return JsonResponse({'status': 500})
+
+        return JsonResponse({
+            'status': 204,
+            'comment': {
+                'id': c.id,
+                'content': c.content,
+                'created_date': str(c.created_date),
+                'user': {
+                    'username': c.user.username,
+                    'name': c.user.first_name + ' ' + c.user.last_name,
+                    'avatar': c.user.avatar.url
+                }
+            }
+        })
+    else:
+        data = []
+        for c in dao.get_comments(book_id=book_id):
+            data.append({
+                'id': c.id,
+                'content': c.content,
+                'created_date': c.created_date,
+                'user': {
+                    'username': c.user.username,
+                    'name': c.user.first_name + ' ' + c.user.last_name,
+                    'avatar': c.user.avatar.url
+                }
+            })
+
+        return JsonResponse(data, safe=False)

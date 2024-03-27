@@ -17,10 +17,13 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('books/', views.pages, name='books'),
     path('books/<int:book_id>/', views.details, name='details'),
-    path('login/', views.login, name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('register/', views.register, name='register'),
     path('cart/', views.cart, name='cart'),
     path('api/cart/', views.add_to_cart, name='add_to_cart'),
-    path('api/cart/<str:book_id>/', views.alter_cart, name='alter_cart')
+    path('api/cart/<str:book_id>/', views.alter_cart, name='alter_cart'),
+    path('payment/', views.payment, name='payment'),
+    path('api/books/<int:book_id>/comments/', views.comments, name='comments'),
+
 ]

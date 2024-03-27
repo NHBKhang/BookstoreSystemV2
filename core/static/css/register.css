@@ -1,0 +1,109 @@
+a.text-body:hover {
+    color: #1DA1F2 !important;
+    text-decoration: none;
+}
+
+.gradient-custom-3 {
+    /* fallback for old browsers */
+    background: #84fab0;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5))
+}
+
+.gradient-custom-4 {
+    color: honeydew !important;
+    font-weight: bold;
+    background: royalblue;
+    border: 3px solid royalblue;
+}
+
+.gradient-custom-4:hover {
+    background: honeydew;
+    color: royalblue !important;
+}
+
+.custom-form-group label {
+    color: #30c6b0;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.custom-form-group span {
+    width: 32px;
+    border-bottom: 1px solid #30c6b0;
+    vertical-align: middle;
+    color: #30c6b0;
+    display: inline;
+}
+
+.custom-form-group input {
+    width: calc(100% - 32px);
+    border: none;
+    border-bottom: 1px solid #30c6b0;
+    box-sizing: content-box;
+    outline: none;
+}
+
+.form-outline.mb-4 {
+    position: relative;
+}
+
+.form-outline.mb-4 span {
+    position: absolute;
+    top: 44px;
+    right: 40px;
+}
+
+.button-group {
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    top: 5%;
+}
+
+#back {
+    position: fixed;
+    left: 0;
+}
+
+#home {
+    position: fixed;
+    right: 0;
+}
+
+.button-group button {
+    border: 2px solid black;
+    border-radius: .3rem;
+}
+
+.button-group button i {
+    color: black !important;
+    font-size: 1.2rem;
+    padding: .25rem;
+}
+
+.button-group button:hover {
+    background: grey;
+}
+
+.button-group button i:hover {
+    color: white !important;
+}
+
+.invalid-feedback {
+    font-size: 1.2rem;
+    padding: 0 !important;
+    margin: 0 5px !important;
+}
+
+.error {
+    font-size: 1rem;
+    color: darkred;
+    margin: 0;
+    padding: 0;
+}
