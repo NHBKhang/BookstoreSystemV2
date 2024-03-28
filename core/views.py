@@ -233,3 +233,45 @@ def comments(request, book_id):
             })
 
         return JsonResponse(data, safe=False)
+
+
+def pay(request):
+    cart = request.session.get(settings.CART_KEY)
+    method = request.POST.get('method')
+
+    if cart:
+        try:
+            if int(method) == 3:
+                order = dao.save_order(cart=cart, is_paid=True)
+
+                return redirect(utils.pay_with_vnpay(request, order))
+
+            elif int(method) == 4:
+                if otp_valid is True:
+                    order = dao.save_order(cart=cart)
+                    utils.send_payment_message(order, order.is_paid)
+
+                    return redirect('/my_orders/' + str(order.id))
+
+        except Exception as ex:
+            print(str(ex))
+            return jsonify({"status": 500})
+        else:
+            del session[key]
+
+
+def my_orders(request):
+    orders, summary = dao.get_orders_by_user_id(request.user.id)
+
+    return render(request, 'my_orders.html', {
+        'orders': orders,
+        'summary': summary
+    })
+
+
+def my_order_details(request, order_id):
+    order = dao.get_order_by_order_id(order_id)
+
+    return render(request, 'my_order_details.html', {
+        'order': order
+    })

@@ -1,0 +1,199 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="content">
+        <h1 class="text-center text-success m-4">Đơn hàng của tôi</h1>
+    </div>
+
+    {% load humanize %}
+    <div class="row">
+        <div class="col-xl-8">
+            {% for o in orders %}
+            <a class="black" href="/my_orders/{{ o.id }}/">
+                <div class="card border shadow-none">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start border-bottom pb-3" style="position: relative">
+                            <div class="text-white mb-3 p-2 badge rounded-pill
+                            {% if o.status.name == 'PENDING' %}
+                            bg-info
+                            {% elif o.status.name == 'PROCESSING' %}
+                            bg-primary
+                            {% elif o.status.name == 'SHIPPED' %}
+                            bg-gold
+                            {% elif o.status.name == 'DELIVERED' %}
+                            bg-success
+                            {% else %}
+                            bg-danger
+                            {% endif %}"
+                                 style="position: absolute; right: 0; bottom: 0; font-size: 1rem">
+                                {{ o.status }}
+                            </div>
+                            <div class="p-0 m-0" style="position: absolute; right: 0; bottom: 50%">
+                                <span style="font-weight: bold">Đơn hàng {{ o.id }}</span>
+                            </div>
+                            <div class="p-0 m-0" style="position: absolute; right: 0; bottom: 35%">
+                                <span>{{ o.created_date }}</span>
+                            </div>
+                            <div class="me-4">
+                                <img src="{{ o.detail0.book.image }}" alt="book_image"
+                                     style="height: 150px"
+                                     class="avatar-lg rounded">
+                            </div>
+                            <div class="flex-grow-1 align-self-center overflow-hidden">
+                                <div>
+                                    <h5 class="text-truncate font-size-18">
+                                        <a href="/books/{{ o.detail0.book.name }}/" class="text-dark">
+                                            {{ o.detail0.book.name }}
+                                        </a>
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        <i class="bx bxs-star text-warning"></i>
+                                        <i class="bx bxs-star text-warning"></i>
+                                        <i class="bx bxs-star text-warning"></i>
+                                        <i class="bx bxs-star text-warning"></i>
+                                        <i class="bx bxs-star-half text-warning"></i>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 ms-2">
+                                <ul class="list-inline mb-0 font-size-16">
+                                    <li class="list-inline-item">
+                                        <a href="#" class="text-muted px-1">
+                                            <i class="mdi mdi-trash-can-outline"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="#" class="text-muted px-1">
+                                            <i class="mdi mdi-heart-outline"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="mt-3 mb-2 d-inline-flex">
+                                        <p class="text-muted mb-2 me-2">Giá: </p>
+                                        <h5 class="mb-0"><span class="me-2">
+                                                     {% if o.detail0.price < o.detail0.book.price %}
+                                                         <del class="text-muted font-size-16 fw-normal me-2">
+                                                             {{ o.detail0.book.price|intcomma }} VNĐ
+                                                         </del>
+                                                     {% endif %}{{ o.detail0.price|intcomma }} VNĐ</span>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="mt-3 mb-2 d-inline-flex">
+                                        <p class="text-muted mb-2 me-2">Số lượng: </p>
+                                        <h5>{{ o.detail0.quantity }}</h5>
+                                    </div>
+                                </div>
+                                <div class="card-footer col-md-12 row">
+                                    <div class="col-md-7">
+                                        <div class="mt-3 d-inline-flex">
+                                            <p class="text-muted mb-2 me-2">Tổng sản phẩm: </p>
+                                            <h5>{{ o.total_quantity }}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mt-3 d-inline-flex">
+                                            <p class="text-muted mb-2 me-2">Thành tiền: </p>
+                                            <h5>{{ o.total_price|intcomma }} VNĐ</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <a class="text-center d-block border m-0 mt-1 btn-primary text-white"
+                                       href="/my_orders/{{ o.id }}/">Xem chi tiết đơn hàng</a>
+                                    {% if o.status.name == 'DELIVERED' or o.status.name == 'CANCELLED' %}
+                                    <a class="text-center d-block border m-0 mt-1 btn-danger text-white"
+                                       href="">Đặt lại đơn hàng</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            <!-- end card -->
+
+            <div class="row my-4">
+                <div class="col-sm-6">
+                    <a href="/" class="btn btn-link text-muted">
+                        <i class="mdi mdi-arrow-left me-1"></i>Tiếp tục mua sắm</a>
+                </div> <!-- end col -->
+                <div class="col-sm-6">
+                    <div class="text-sm-end mt-2 mt-sm-0">
+                        <a href="/cart" class="btn btn-success">
+                            <i class="mdi mdi-cart-outline me-1"></i> Checkout </a>
+                    </div>
+                </div> <!-- end col -->
+            </div> <!-- end row-->
+        </div>
+
+        <div class="col-xl-4">
+            <div class="mt-5 mt-lg-0">
+                <div class="card border shadow-none">
+                    <div class="card-header bg-transparent border-bottom py-3 px-4">
+                        <h5 class="font-size-16 mb-0">Tóm tắt tất cả đơn hàng</h5>
+                    </div>
+                    <div class="card-body p-4 pt-2">
+
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <tbody>
+                                <tr>
+                                    <td>Tổng phụ:</td>
+                                    <td class="text-end">{{ summary.subtotal|intcomma }} VNĐ</td>
+                                </tr>
+                                <tr>
+                                    <td>Giảm giá:</td>
+                                    <td class="text-end">{{ summary.discount|intcomma }} VNĐ</td>
+                                </tr>
+                                <tr>
+                                    <td>Phí vận chuyển:</td>
+                                    <td class="text-end">{{ summary.shipping|intcomma }} VNĐ</td>
+                                </tr>
+                                <tr>
+                                    <td>Thuế ước tính:</td>
+                                    <td class="text-end">{{ summary.tax|intcomma }} VNĐ</td>
+                                </tr>
+                                <tr class="bg-light">
+                                    <th>Tổng:</th>
+                                    <td class="text-end">
+                                            <span class="fw-bold">
+                                                {{ summary.total|intcomma }} VNĐ
+                                            </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- end table-responsive -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+</div>
+
+<link rel="stylesheet" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc="
+      href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css"
+      crossorigin="anonymous"/>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<style>
+    a.black {
+        color: black !important;
+    }
+
+    .bg-gold {
+        background-color: gold !important;
+    }
+</style>
+{% endblock %}

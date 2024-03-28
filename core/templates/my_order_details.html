@@ -1,0 +1,230 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="container">
+        <!-- Title -->
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <h2 class="h5 mb-0"><a href="" class="text-muted"></a>Đơn hàng {{ order.id }}</h2>
+        </div>
+
+        <!-- Main content -->
+        {% load humanize %}
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Details -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-3 d-flex justify-content-between">
+                            <div>
+                                <span class="me-3">{{ order.created_date }}</span>
+                                <span class="me-3">Đơn hàng {{ order.id }}</span>
+                                {% if order.transaction %}
+                                {% if order.payment %}
+                                <span class="me-3">{{ order.payment.bank_code }} -{{ order.payment.transaction_id }}</span>
+                                {% else %}
+                                <span class="me-3">Momo -{{ user.phone }}</span>
+                                {% endif %}
+                                {% endif %}
+                                <span class="badge rounded-pill
+                                {% if order.status.name == 'PENDING' %}
+                                bg-info
+                                {% elif order.status.name == 'PROCESSING' %}
+                                bg-primary
+                                {% elif order.status.name == 'SHIPPED' %}
+                                bg-gold
+                                {% elif order.status.name == 'DELIVERED' %}
+                                bg-success
+                                {% else %}
+                                bg-danger
+                                {% endif %}">{{ order.status.name }}</span>
+                            </div>
+                            <div class="d-flex">
+                                {% if order.is_paid %}
+                                <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text">
+                                    <i class="fa-solid fa-download"></i> <span class="text">Hóa đơn</span>
+                                </button>
+                                {% endif %}
+                                <div class="dropdown">
+                                    <button class="btn btn-link p-0 text-muted" type="button"
+                                            data-bs-toggle="dropdown"><i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">
+                                            <i class="fa-solid fa-pencil"></i> Chỉnh sửa</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#">
+                                            <i class="fa-solid fa-print"></i> In</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Sách</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-end">Giá tiền</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for d in order.details %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <img src="{{ d.book.image }}" alt="book_image" width="50"
+                                                 class="img-fluid">
+                                        </div>
+                                        <div class="flex-lg-grow-1 ms-3">
+                                            <h6 class="small mb-0">
+                                                <a href="/books/{{ d.book.id }}/"
+                                                   class="text-reset">{{ d.book.name }}</a>
+                                            </h6>
+                                            <span class="small">Bản phổ thông</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">{{ d.quantity }}</td>
+                                <td class="text-end">{{ d.price|intcomma }} VNĐ
+                                    {% if d.price < d.book.price %}
+                                    <del class="text-danger">{{ d.book.price|intcomma }} VNĐ</del>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="2">Tổng phụ</td>
+                                <td class="text-end">{{ order.subtotal_price|intcomma }} VNĐ</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Phí vận chuyển</td>
+                                <td class="text-end">{{ order.shipping|intcomma }} VNĐ</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Thuế</td>
+                                <td class="text-end">{{ order.tax|intcomma }} VNĐ</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Giảm giá {% if order.discount != 0 %}(Mã: NEWYEAR){% endif %}</td>
+                                <td class="text-danger text-end">
+                                    {{ order.discount|intcomma }} VNĐ
+                                </td>
+                            </tr>
+                            <tr class="fw-bold">
+                                <td colspan="2">Thành tiền</td>
+                                <td class="text-end">{{ order.total_price|intcomma }} VNĐ</td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <!-- Payment -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6" style="vertical-align: center">
+                                <h3 class="h6">Phương thức thanh toán</h3>
+                                <p>
+                                    {% if order.transaction %}
+                                    {% if order.payment %}
+                                    <span class="me-3">{{ order.payment.bank_code }} -{{ order.payment.transaction_id }}</span>
+                                    {% else %}
+                                    <span class="me-3">Momo -{{ user.phone }}</span>
+                                    {% endif %}
+                                    <br><span class="me-3">Thanh toán trực tuyến</span>
+                                    {% else %}
+                                    <br><span class="me-3">Thanh toán tại quầy</span>
+                                    {% endif %}
+                                    <br>Tổng: {{ order.total_price|intcomma }} VNĐ
+                                    {% if order.transaction %}
+                                    <span class="badge bg-success rounded-pill">ĐÃ THANH TOÁN</span>
+                                    {% else %}
+                                    <span class="badge bg-danger rounded-pill">CHƯA THANH TOÁN</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3 class="h6">Địa chỉ thanh toán</h3>
+                                <address>
+                                    <strong>Nhà sách Book Store</strong>
+                                    <br>xã Nhơn Đức, huyện Nhà Bè, TP.HCM<br>
+                                    <abbr title="Phone">P: 19005341</abbr>
+                                </address>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if order.transaction %}
+            <div class="col-lg-4">
+                <!-- Customer Notes -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="h6">Ghi chú khách hàng</h3>
+                        {% if order.payment %}
+                        <p>{{ order.payment.description }}</p>
+                        {% else %}
+                        <p>Giao sách cẩn thận, tránh bị trầy xước.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <!-- Shipping information -->
+                    <div class="card-body">
+                        <h3 class="h6">Thông tin giao hàng</h3>
+                        <strong>Vietnam Post</strong>
+                        <span><a href="#" class="text-decoration-underline" target="_blank">FF1234567890</a> <i
+                                class="bi bi-box-arrow-up-right"></i> </span>
+                        <hr>
+                        <h3 class="h6">Địa chỉ giao hàng</h3>
+                        <address>
+                            <strong>{{ user.first_name }} {{ user.last_name }}</strong>
+                            <br>{{ user.address }}<br>
+                            <abbr title="Phone">P: {{ user.phone }}</abbr>
+                        </address>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background: #eee;
+    }
+
+    .card {
+        box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+    }
+
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0, 0, 0, .125);
+        border-radius: 1rem;
+    }
+
+    .text-reset {
+        --bs-text-opacity: 1;
+        color: inherit !important;
+    }
+
+    a {
+        color: #5465ff;
+        text-decoration: none;
+    }
+</style>
+
+{% endblock %}

@@ -25,5 +25,6 @@ urlpatterns = [
     path('api/cart/<str:book_id>/', views.alter_cart, name='alter_cart'),
     path('payment/', views.payment, name='payment'),
     path('api/books/<int:book_id>/comments/', views.comments, name='comments'),
-
+    path('my_orders/', views.my_orders, name='my_orders'),
+    path('my_orders/<int:order_id>/', views.my_order_details, name='my_order_details')
 ]
