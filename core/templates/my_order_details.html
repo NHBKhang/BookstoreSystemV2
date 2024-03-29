@@ -22,11 +22,9 @@
                                 <span class="me-3">{{ order.created_date }}</span>
                                 <span class="me-3">Đơn hàng {{ order.id }}</span>
                                 {% if order.transaction %}
-                                {% if order.payment %}
-                                <span class="me-3">{{ order.payment.bank_code }} -{{ order.payment.transaction_id }}</span>
+                                <span class="me-3">{{ order.transaction.bank_code }} -{{ order.transaction.transaction_id }}</span>
                                 {% else %}
                                 <span class="me-3">Momo -{{ user.phone }}</span>
-                                {% endif %}
                                 {% endif %}
                                 <span class="badge rounded-pill
                                 {% if order.status.name == 'PENDING' %}
@@ -42,7 +40,7 @@
                                 {% endif %}">{{ order.status.name }}</span>
                             </div>
                             <div class="d-flex">
-                                {% if order.is_paid %}
+                                {% if order.transaction %}
                                 <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text">
                                     <i class="fa-solid fa-download"></i> <span class="text">Hóa đơn</span>
                                 </button>
@@ -131,11 +129,11 @@
                                 <h3 class="h6">Phương thức thanh toán</h3>
                                 <p>
                                     {% if order.transaction %}
-                                    {% if order.payment %}
-                                    <span class="me-3">{{ order.payment.bank_code }} -{{ order.payment.transaction_id }}</span>
+                                    <span class="me-3">{{ order.transaction.bank_code }} -{{ order.transaction.transaction_id }}</span>
                                     {% else %}
                                     <span class="me-3">Momo -{{ user.phone }}</span>
                                     {% endif %}
+                                    {% if order.transaction %}
                                     <br><span class="me-3">Thanh toán trực tuyến</span>
                                     {% else %}
                                     <br><span class="me-3">Thanh toán tại quầy</span>
@@ -166,8 +164,8 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <h3 class="h6">Ghi chú khách hàng</h3>
-                        {% if order.payment %}
-                        <p>{{ order.payment.description }}</p>
+                        {% if order.transaction.description %}
+                        <p>{{ order.transaction.description }}</p>
                         {% else %}
                         <p>Giao sách cẩn thận, tránh bị trầy xước.</p>
                         {% endif %}

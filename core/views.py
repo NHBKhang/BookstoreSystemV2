@@ -3,13 +3,15 @@ from rest_framework import viewsets, generics, status, parsers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from core import serializers, paginators, dao
-from core.models import Category, User, Author, Inventory, Book, Book_Inventories, Gender
+from core.models import Category, User, Author, Inventory, Book, Book_Inventories, Gender, OrderStatus
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 import math, json
 from bookstore import settings
 from core.utils import context_processors as cp
 from django.contrib.auth import login
+from core.utils import utils
+from  django.contrib import messages
 
 
 class CategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
@@ -236,28 +238,60 @@ def comments(request, book_id):
 
 
 def pay(request):
-    cart = request.session.get(settings.CART_KEY)
-    method = request.POST.get('method')
+    cart = request.session.get(settings.CART_KEY, {})
+    method = request.POST.get('payment')
+    order = None
 
     if cart:
         try:
             if int(method) == 3:
-                order = dao.save_order(cart=cart, is_paid=True)
+                order = dao.save_order_from_request(request, cart=cart, is_paid=True)
+            elif int(method) == 4:
+                print(method)
+                order = dao.save_order_from_request(request, cart=cart)
+        except Exception as ex:
+            print(str(ex))
+            return JsonResponse({"status": 500})
+        else:
+            del request.session[settings.CART_KEY]
 
+            if int(method) == 3:
                 return redirect(utils.pay_with_vnpay(request, order))
 
             elif int(method) == 4:
-                if otp_valid is True:
-                    order = dao.save_order(cart=cart)
-                    utils.send_payment_message(order, order.is_paid)
+                return redirect('/my_orders/' + str(order.id))
 
-                    return redirect('/my_orders/' + str(order.id))
 
-        except Exception as ex:
-            print(str(ex))
-            return jsonify({"status": 500})
-        else:
-            del session[key]
+def vnpay_return(request):
+    vnp_TransactionNo = request.GET.get('vnp_TransactionNo')
+    vnp_TxnRef = request.GET.get('vnp_TxnRef')
+    vnp_Amount = request.GET.get('vnp_Amount')
+    vnp_ResponseCode = request.GET.get('vnp_ResponseCode')
+    vnp_BankCode = request.GET.get('vnp_BankCode')
+    vnp_OrderInfo = request.GET.get('vnp_OrderInfo')
+    order_id = int(vnp_TxnRef.split('-')[0])
+
+    if vnp_ResponseCode == '00':
+        try:
+            transaction = dao.save_transaction(vnp_TransactionNo, vnp_BankCode, vnp_OrderInfo)
+            dao.update_order(order_id, status=OrderStatus.PROCESSING, transaction_id=transaction.id)
+
+            messages.info(request, 'Cập nhật trạng thái thanh toán thành công.')
+        except Exception as e:
+            print(f"Error updating database: {str(e)}")
+            messages.error(request, 'Lỗi cập nhật trạng thái thanh toán.')
+
+    else:
+        messages.error(request, 'Lỗi thanh toán. Vui lòng thử lại hoặc liên hệ với hỗ trợ.')
+
+    return render(request, 'vnpay_return.html', {
+        'transaction_no': vnp_TransactionNo,
+        'txn_ref': vnp_TxnRef,
+        'amount': int(float(vnp_Amount) / 100),
+        'bank_code': vnp_BankCode,
+        'description': vnp_OrderInfo,
+        'order_id': order_id
+    })
 
 
 def my_orders(request):

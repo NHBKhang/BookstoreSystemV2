@@ -1,5 +1,5 @@
 function getCommentBox(c) {
-    var name = c.user.name.trim() === ''? c.user.username : c.user.name;
+    var name = c.user.name.trim() === '' ? c.user.username : c.user.name;
     return `<li class="list-group-item" style="height: auto">
                 <div class="d-flex">
                     <div class="me-2">
@@ -50,7 +50,21 @@ function addComment(bookId) {
         }),
         headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": getCookie('csrftoken')
+            "X-CSRFToken": () => {
+                var name = 'csrftoken';
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
         }
     }).then((res) => res.json()).then((data) => {
         spinner("none")
@@ -66,17 +80,3 @@ function addComment(bookId) {
     }).catch(err => console.info(err)) // js promise
 }
 
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}

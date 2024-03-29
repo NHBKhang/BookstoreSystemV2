@@ -1,4 +1,4 @@
-from core.models import Book, Comment, Order, OrderDetails
+from core.models import Book, Comment, Order, OrderDetails, Receipt, ReceiptDetails, User, Transaction
 from bookstore import settings
 
 
@@ -100,7 +100,7 @@ def get_order_by_order_id(order_id):
         'transaction': o.transaction,
         'details': OrderDetails.objects.filter(order_id=order_id).all(),
         'total_quantity': 0,
-        'total_price': 0,
+        'total_price':  o.tax_fee + o.shipping_fee,
         'subtotal_price': 0,
         'discount': 0
     }
@@ -108,8 +108,42 @@ def get_order_by_order_id(order_id):
     other_fee = order['tax'] + order['shipping']
     for d in OrderDetails.objects.filter(order_id=order_id).all():
         order['total_quantity'] += d.quantity
-        order['total_price'] += d.quantity * d.price + other_fee
+        order['total_price'] += d.quantity * d.price
         order['subtotal_price'] += d.quantity * d.book.price
     order['discount'] = order['total_price'] - order['subtotal_price'] - other_fee
 
     return order
+
+
+def save_order_from_request(request, cart, is_paid=False):
+    if cart:
+        o = Order.objects.create(customer_user=request.user)
+        if is_paid:
+            staff = User.objects.filter(is_staff=True).all()[1]
+            r = Receipt.objects.create(customer_user=request.user, staff_user=staff)
+
+        for i, c in cart.items():
+            OrderDetails.objects.create(order=o, quantity=c['quantity'], price=c['price'], book_id=c['id'])
+            if is_paid:
+                ReceiptDetails.objects.create(receipt=r, quantity=c['quantity'], price=c['price'], book_id=c['id'])
+
+        return o
+
+
+def get_order_details(order_id):
+    return OrderDetails.objects.filter(order_id=order_id).all()
+
+
+def save_transaction(transaction_id, bank_code, description):
+    return Transaction.objects.create(transaction_id=transaction_id, bank_code=bank_code, description=description)
+
+
+def update_order(order_id, status=None, transaction_id=None):
+    order = Order.objects.get(id=order_id)
+
+    if status:
+        order.status = status
+    if transaction_id:
+        order.transaction_id = transaction_id
+
+    order.save()

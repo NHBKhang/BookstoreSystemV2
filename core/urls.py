@@ -21,10 +21,12 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('register/', views.register, name='register'),
     path('cart/', views.cart, name='cart'),
+    path('my_orders/', views.my_orders, name='my_orders'),
+    path('my_orders/<int:order_id>/', views.my_order_details, name='my_order_details'),
+    path('payment/', views.payment, name='payment'),
     path('api/cart/', views.add_to_cart, name='add_to_cart'),
     path('api/cart/<str:book_id>/', views.alter_cart, name='alter_cart'),
-    path('payment/', views.payment, name='payment'),
     path('api/books/<int:book_id>/comments/', views.comments, name='comments'),
-    path('my_orders/', views.my_orders, name='my_orders'),
-    path('my_orders/<int:order_id>/', views.my_order_details, name='my_order_details')
+    path('api/pay/', views.pay, name='pay'),
+    path('vnpay_return/', views.vnpay_return, name='vnpay_return')
 ]

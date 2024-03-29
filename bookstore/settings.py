@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'rest_framework',
-    'django.contrib.humanize'
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -156,3 +156,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+VNP_TMN_CODE = 'LP7Z4P3V'
+VNP_HASH_SECRET = 'JOHVXEOHNQHDOMXMBRCQLQQCUVTWKNGM'
+VNP_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
+VNP_IP_ADDRESS = "http://127.0.0.1:8000"
+VNP_CURRENCY_CODE = 'VND'
+VNP_VERSION = '2.1.0'
+VNP_COMMAND = 'pay'

@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from ckeditor.fields import RichTextField
 from cloudinary.models import CloudinaryField
 from django_enumfield import enum
 
@@ -84,7 +83,7 @@ class Comment(models.Model):
 
 
 class Transaction(models.Model):
-    transaction_id = models.IntegerField(null=False, blank=False)
+    transaction_id = models.BigIntegerField(null=False, blank=False)
     transaction_date = models.DateTimeField(auto_now_add=True)
     bank_code = models.CharField(max_length=20, null=False, blank=False)
     description = models.TextField(null=False)
@@ -92,8 +91,8 @@ class Transaction(models.Model):
 
 class ItemBase(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
-    tax_fee = models.IntegerField(null=False, blank=False, default=0)
-    shipping_fee = models.IntegerField(null=False, blank=False, default=0)
+    tax_fee = models.IntegerField(null=False, blank=False, default=1000)
+    shipping_fee = models.IntegerField(null=False, blank=False, default=1000)
 
     class Meta:
         abstract = True
@@ -145,7 +144,6 @@ class Receipt(ItemBase):
 class ReceiptDetails(ItemDetailsBase):
     receipt = models.ForeignKey(Receipt, on_delete=models.CASCADE, related_name='receipt_details')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='receipt_details')
-
 
 # class DiscountBase(models.Model):
 #     amount = models.DecimalField(max_digits=10, decimal_places=2)
