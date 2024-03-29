@@ -38,9 +38,12 @@
     + Tên chủ thẻ: NGUYEN VAN A
     + Ngày phát hành: 07/15
     + Mật khẩu OTP: 123456
-  - Tài khoản VNPAY:
+  - Tài khoản test VNPAY:
     + Username: nhbkhang12@gmail.com
     + Password: Khang2003
+  - Tài khoản test mail server Ethereal:
+    + Email: josh.johnston@ethereal.email
+    + Password: eqaUJhQGnhduwAK7CT
   - Các website liên quan tới hệ thống:
     + VNPAY Admin: https://sandbox.vnpayment.vn/merchantv2/
     + VNPAY Test case: https://sandbox.vnpayment.vn/vnpaygw-sit-testing/user/login
