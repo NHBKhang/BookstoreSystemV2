@@ -1,5 +1,6 @@
 # Bookstore System V2
 
+Đồ án cuối kỳ cho môn Lập trình Cơ sở dữ liệu. Hệ thống quản lý nhà sách viết bằng Python Django sử dụng MySQL server.
 
 * **Cài đặt:**
     -
