@@ -76,13 +76,13 @@ def get_orders_by_user_id(user_id):
         for d in OrderDetails.objects.filter(order_id=o.id).all():
             orders[i]['total_quantity'] += d.quantity
             orders[i]['total_price'] += d.quantity * d.price + other_fee
-            orders[i]['subtotal_price'] = d.quantity * d.book.price + other_fee
+            orders[i]['subtotal_price'] += d.quantity * d.book.price + other_fee
 
         summary['shipping'] += o.shipping_fee
         summary['tax'] += o.tax_fee
-        summary['discount'] += orders[i]['total_price'] - orders[i]['subtotal_price']
         summary['total'] += orders[i]['total_price']
         summary['subtotal'] += orders[i]['subtotal_price'] - other_fee
+        summary['discount'] = +orders[i]['total_price'] - orders[i]['subtotal_price']
 
     return orders, summary
 

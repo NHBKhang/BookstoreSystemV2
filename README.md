@@ -50,7 +50,7 @@
     + VNPAY Test case: https://sandbox.vnpayment.vn/vnpaygw-sit-testing/user/login
     + Ethereal Web: https://ethereal.email/
     + Pythonanywhere: Nothing here
-    + GG Drive: Not yet
+    + GG Drive: https://drive.google.com/drive/folders/1iLbAZDfFQ2MM5kR3MuzpbPS_KPjXvou_?usp=drive_link
   - Ngôn ngữ: Html, Css, Javascript, Python
   - Framwork: Flask
   - Tools: MySQL Workbench, PyCharm

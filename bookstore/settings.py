@@ -157,7 +157,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+# VNPAY config
 VNP_TMN_CODE = 'LP7Z4P3V'
 VNP_HASH_SECRET = 'JOHVXEOHNQHDOMXMBRCQLQQCUVTWKNGM'
 VNP_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
@@ -165,3 +165,12 @@ VNP_IP_ADDRESS = "http://127.0.0.1:8000"
 VNP_CURRENCY_CODE = 'VND'
 VNP_VERSION = '2.1.0'
 VNP_COMMAND = 'pay'
+
+# Mail server config
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.ethereal.email'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'josh.johnston@ethereal.email'
+EMAIL_HOST_PASSWORD = 'eqaUJhQGnhduwAK7CT'
+DEFAULT_FROM_EMAIL = 'bookstorestaff@gmail.com'

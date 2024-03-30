@@ -11,7 +11,8 @@ from bookstore import settings
 from core.utils import context_processors as cp
 from django.contrib.auth import login
 from core.utils import utils
-from  django.contrib import messages
+from django.contrib import messages
+from core.mail import Mail
 
 
 class CategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
@@ -275,6 +276,11 @@ def vnpay_return(request):
         try:
             transaction = dao.save_transaction(vnp_TransactionNo, vnp_BankCode, vnp_OrderInfo)
             dao.update_order(order_id, status=OrderStatus.PROCESSING, transaction_id=transaction.id)
+
+            Mail('order', {
+                'id': order_id,
+                'name': request.user.first_name}
+                 ).send_email([request.user.email])
 
             messages.info(request, 'Cập nhật trạng thái thanh toán thành công.')
         except Exception as e:
