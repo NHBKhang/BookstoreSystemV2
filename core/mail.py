@@ -14,6 +14,12 @@ class Mail:
                                 f'công. Đơn hàng sẽ được đóng gói và vận chuyển đến địa chỉ sớm nhất có thể. Vui lòng '
                                 f'theo dõi đơn hàng cùa bạn trên trang web. Cảm ơn bạn vì đã mua sách tại Bookstore.\n'
                                 f'Trân trọng\nBOOKSTORE')
+            elif email_type == 'subscribe':
+                self.subject = 'Đăng ký nhận email về sách'
+                self.message = (f'Chào {context["name"]},\nBạn đã đăng ký dịch vụ nhận email về các cập nhật và sự kiện'
+                                f' sản phẩm. Bạn sẽ nhận được các thông tin mới nhất về sách thông qua email. Nếu bạn '
+                                f'thay đổi ý định, bạn có thể hủy đăng ký bất cứ lúc nào. Cảm ơn bạn vì đã đăng ký dịch'
+                                f' vụ của chúng tôi.\nTrân trọng\nBOOKSTORE')
             else:
                 raise ValueError(email_type + ' is invalid email_type value')
         except Exception as e:

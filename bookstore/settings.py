@@ -91,6 +91,7 @@ TEMPLATES = [
                 'core.utils.context_processors.categories',
                 'core.utils.context_processors.count_cart',
                 'core.utils.context_processors.today',
+                'core.utils.context_processors.gender'
             ],
         },
     },

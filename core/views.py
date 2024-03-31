@@ -241,10 +241,16 @@ def comments(request, book_id):
 def pay(request):
     cart = request.session.get(settings.CART_KEY, {})
     method = request.POST.get('payment')
-    order = None
+    subscribe = request.POST.get('subscribe')
 
     if cart:
+        order = None
         try:
+            if subscribe:
+                Mail('subscribe', {
+                    'name': request.user.first_name
+                }).send_email([request.user.email])
+
             if int(method) == 3:
                 order = dao.save_order_from_request(request, cart=cart, is_paid=True)
             elif int(method) == 4:
@@ -279,8 +285,8 @@ def vnpay_return(request):
 
             Mail('order', {
                 'id': order_id,
-                'name': request.user.first_name}
-                 ).send_email([request.user.email])
+                'name': request.user.first_name
+            }).send_email([request.user.email])
 
             messages.info(request, 'Cập nhật trạng thái thanh toán thành công.')
         except Exception as e:
@@ -315,3 +321,7 @@ def my_order_details(request, order_id):
     return render(request, 'my_order_details.html', {
         'order': order
     })
+
+
+def profile(request):
+    return render(request, 'profile.html')

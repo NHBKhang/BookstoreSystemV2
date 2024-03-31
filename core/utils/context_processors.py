@@ -1,5 +1,5 @@
 import datetime
-
+from core.models import Gender
 from core.models import Category
 from bookstore import settings
 
@@ -29,4 +29,10 @@ def count_cart(request):
 def today(request):
     return {
         'today': datetime.datetime.now()
+    }
+
+
+def gender(request):
+    return {
+        'gender': Gender.items()
     }

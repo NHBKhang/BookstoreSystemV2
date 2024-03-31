@@ -20,13 +20,13 @@
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Thể loại</a>
                     <ul style="column-count: 3" class="dropdown-menu bg-dark">
                         {% for c in categories %}
-                        <li><a class="dropdown-item text-white" href="/books/?page=1&cate_id={{ c.id }}&kw=">
+                        <li><a class="dropdown-item text-white" href="/books/?page=1&cate_id={{ c.id }}&kw=/">
                             {{ c.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="/cart">&#128722; Giỏ hàng <span
+                    <a class="nav-link text-danger" href="/cart/">&#128722; Giỏ hàng <span
                             class="badge bg-danger cart-counter">{{ total_quantity }}</span></a>
                 </li>
             </ul>
@@ -45,7 +45,10 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item" href="/my_orders">Đơn hàng của tôi</a>
+                                <a class="dropdown-item" href="/profile/">Hồ sơ</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/my_orders/">Đơn hàng của tôi</a>
                             </li>
                             <li class="dropdown-divider"></li>
                             <li>
@@ -58,7 +61,7 @@
                         </ul>
                     </div>
                     {% else %}
-                    <a style="width: 35px" title="Đăng nhập" href="/login" class="btn btn-primary icon ms-2 me-2">
+                    <a style="width: 35px" title="Đăng nhập" href="/login/" class="btn btn-primary icon ms-2 me-2">
                         <i class="fa-solid fa-user"></i></a>
                     {% endif %}
                 </div>
