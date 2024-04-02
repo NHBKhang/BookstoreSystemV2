@@ -1,0 +1,51 @@
+{% extends 'admin/base_site.html' %}
+
+{% block content %}
+<h1>THÔNG KÊ SÁCH TRỰC TUYẾN</h1>
+
+<ul>
+    {% for c in stats %}
+        <li><strong>{{ c.name }}</strong>: {{ c.count }}</li>
+    {% endfor %}
+</ul>
+<canvas id="myChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let labels = [];
+    let values = [];
+
+    {% for c in stats %}
+    values.push('{{ c.count }}')
+    labels.push('{{ c.name }}')
+    {% endfor %}
+
+    window.onload = () => {
+        const ctx = document.getElementById('myChart');
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '# So luong',
+            data: values,
+            borderWidth: 1,
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+              'rgb(255, 205, 86)'
+            ]
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+</script>
+{% endblock %}

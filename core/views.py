@@ -162,6 +162,7 @@ def add_to_cart(request):
         if id in cart:  # sp da co trong gio
             cart[id]['quantity'] += 1
         else:  # san pham chua co trong gio
+            print(data.get("discount"))
             cart[id] = {
                 "id": id,
                 "name": data.get("name"),
@@ -324,4 +325,20 @@ def my_order_details(request, order_id):
 
 
 def profile(request):
-    return render(request, 'profile.html')
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        birthday = request.POST.get('birthday')
+        gender = request.POST.get('gender')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        avatar = request.POST.get('avatar')
+
+        if dao.update_user(request.user.id, first_name, last_name, birthday, Gender(int(gender)), phone, email,
+                           address, avatar):
+            return redirect('profile')
+
+    return render(request, 'profile.html', {
+        'stat': dao.profile_stats(request.user)
+    })

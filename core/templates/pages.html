@@ -5,38 +5,52 @@
 <br>
 <section class="container">
     {% if books %}
-        <div style="justify-content: center; align-items: center" class="d-flex row">
-            {% for b in books %}
-                <div style="position: relative" class="card mb-2 ms-1 me-1 col-sm-5 col-md-3 col-lg-2">
-                    <a class="h-100 normal box-container" href="/books/{{ b.id }}">
-                        <div class="h-100 p-0">
-                            <img title="{{ b.name }}" class="card-img-top" src="{{ b.image }}"
-                                 alt="Card image" height="200">
-                        </div>
-                        <div class="card-body">
-                            <h4 title="{{ b.name }}" class="card-title w-100">{{ b.name }}</h4>
-                            {% load humanize %}
-                            <p title="{{ b.price|intcomma }} VNĐ" class="card-text">
-                                {{ b.price|intcomma }} VNĐ</p>
-                        </div>
-                    </a>
-                    <div class="card-footer d-flex justify-content-center w-100 h-100">
-                        <a href="" onclick="addToCart('{{ b.id }}', '{{ b.name }}', '{{ b.price }}')"
-                           class="btn btn-danger">&#128722; Thêm vào giỏ</a>
-                    </div>
+    <div style="justify-content: center; align-items: center" class="d-flex row">
+        {% for b in books %}
+        <div style="position: relative" class="card mb-2 ms-1 me-1 col-sm-5 col-md-3 col-lg-2">
+            <a class="h-100 normal box-container" href="/books/{{ b.id }}">
+                <div class="h-100 p-0">
+                    <img title="{{ b.name }}" class="card-img-top" src="{{ b.image }}"
+                         alt="Card image" height="200">
                 </div>
-            {% endfor %}
+                <div class="card-body">
+                    <h4 title="{{ b.name }}" class="card-title w-100">{{ b.name }}</h4>
+                    {% load humanize %}
+
+                    {% if b.discount.is_active %}
+                    {% load mathfilters %}
+                    {% with discount=b.price|mul:b.discount.amount %}
+                    {% with discount_price=b.price|sub:discount|floatformat %}
+                    <p title="{{ discount_price|intcomma }} VNĐ" class="card-text">
+                        <del class="text-muted pb-0 mb-0">{{ b.price|intcomma }} VNĐ</del>
+                        <span>{{ discount_price|intcomma }} VNĐ</span></p>
+                    {% endwith %}{% endwith %}
+
+                    {% else %}
+                    <p title="{{ b.price|intcomma }} VNĐ" class="card-text"><span class="d-inline"></span>
+                        {{ b.price|intcomma }} VNĐ</p>
+
+                    {% endif %}
+
+                </div>
+            </a>
+            <div class="card-footer d-flex justify-content-center w-100 h-100">
+                <a href="" onclick="addToCart('{{ b.id }}', '{{ b.name }}', '{{ b.price }}')"
+                   class="btn btn-danger">&#128722; Thêm vào giỏ</a>
+            </div>
         </div>
-        <ul style="justify-content: center" class="pagination mt-1 d-flex">
-            {% for i in pages %}
-                <li class="page-item">
-                    <a class="page-link"
-                       href="/books/?page={{ i }}&cate_id={{ request.GET.cate_id }}&kw={{ request.GET.kw }}">{{ i }}</a>
-                </li>
-            {% endfor %}
-        </ul>
+        {% endfor %}
+    </div>
+    <ul style="justify-content: center" class="pagination mt-1 d-flex">
+        {% for i in pages %}
+        <li class="page-item">
+            <a class="page-link"
+               href="/books/?page={{ i }}&cate_id={{ request.GET.cate_id }}&kw={{ request.GET.kw }}">{{ i }}</a>
+        </li>
+        {% endfor %}
+    </ul>
     {% else %}
-        <p class="alert alert-info mt-2">KHÔNG có sản phẩm nào!!!</p>
+    <p class="alert alert-info mt-2">KHÔNG có sản phẩm nào!!!</p>
     {% endif %}
 </section>
 

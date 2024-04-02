@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from cloudinary.models import CloudinaryField
 from django_enumfield import enum
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Gender(enum.Enum):
@@ -88,6 +89,9 @@ class Transaction(models.Model):
     bank_code = models.CharField(max_length=20, null=False, blank=False)
     description = models.TextField(null=False)
 
+    def __str__(self):
+        return self.bank_code + str(self.transaction_id)
+
 
 class ItemBase(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
@@ -130,6 +134,13 @@ class OrderDetails(ItemDetailsBase):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_details')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='order_details')
 
+    def __str__(self):
+        return 'Chi tiết đơn hàng ' + str(self.order.id) + ' - ' + str(self.book.name)
+
+    class Meta:
+        verbose_name = "order details"
+        verbose_name_plural = "order details"
+
 
 class Receipt(ItemBase):
     staff_user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -145,23 +156,19 @@ class ReceiptDetails(ItemDetailsBase):
     receipt = models.ForeignKey(Receipt, on_delete=models.CASCADE, related_name='receipt_details')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='receipt_details')
 
-# class DiscountBase(models.Model):
-#     amount = models.DecimalField(max_digits=10, decimal_places=2)
-#     valid_from = models.DateTimeField(null=True, blank=True)
-#     valid_to = models.DateTimeField(null=True, blank=True)
-#     is_active = models.BooleanField(default=True)
-#
-#     def __str__(self):
-#         return self.code
-#
-#     def is_valid(self):
-#         now = timezone.now()
-#         return self.valid_from <= now <= self.valid_to
 
+class Discount(models.Model):
+    code = models.CharField(max_length=20, null=False, blank=False)
+    amount = models.DecimalField(max_digits=10, decimal_places=2,
+                                 validators=[MinValueValidator(0), MaxValueValidator(1)])
+    valid_from = models.DateTimeField(null=True, blank=True)
+    valid_to = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    book = models.OneToOneField(Book, on_delete=models.CASCADE, related_name='discount')
 
-# class DiscountCode(models.Model):
-#     code = models.CharField(max_length=20, unique=True)
-#     amount = models.DecimalField(max_digits=10, decimal_places=2)
-#     valid_from = models.DateTimeField(null=True, blank=True)
-#     valid_to = models.DateTimeField(null=True, blank=True)
-#     is_active = models.BooleanField(default=True)
+    def __str__(self):
+        return self.code
+
+    def is_valid(self):
+        now = timezone.now()
+        return self.valid_from <= now <= self.valid_to

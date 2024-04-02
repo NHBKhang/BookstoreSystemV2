@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'django.contrib.humanize',
+    'mathfilters'
 ]
 
 MIDDLEWARE = [
