@@ -19,4 +19,12 @@
     <orderEntry type="jdk" jdkName="Python 3.10 (BookstoreSystem)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/sale/templates" />
+        <option value="$MODULE_DIR$/core/templates" />
+      </list>
+    </option>
+  </component>
 </module>

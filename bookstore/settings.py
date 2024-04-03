@@ -35,11 +35,12 @@ CKEDITOR_UPLOAD_PATH = "ckeditor/images"
 
 AUTH_USER_MODEL = 'core.User'
 
-MEDIA_ROOT = '%s/courses/static/' % BASE_DIR
+MEDIA_ROOT = '%s/core/static/' % BASE_DIR
 
 PAGE_SIZE = 8
 
 CART_KEY = 'cart'
+SALE_CART_KEY = 'sale_cart'
 
 import cloudinary
 
@@ -63,7 +64,8 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'django.contrib.humanize',
-    'mathfilters'
+    'mathfilters',
+    'sale',
 ]
 
 MIDDLEWARE = [
@@ -92,7 +94,8 @@ TEMPLATES = [
                 'core.utils.context_processors.categories',
                 'core.utils.context_processors.count_cart',
                 'core.utils.context_processors.today',
-                'core.utils.context_processors.gender'
+                'core.utils.context_processors.gender',
+                'sale.utils.context_processors.count_cart'
             ],
         },
     },

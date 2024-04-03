@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang bán hàng</title>
+    <link rel="icon" href="../static/img/logo_book.png"/>
+    <link href="" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/76334962e6.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../../static/js/sale.js"></script>
+</head>
+<body>
+<h1 class="text-center text-success m-1">WEBSITE BÁN HÀNG TRỰC TUYẾN</h1>
+
+<div class="row mt-4">
+    <div class="col-sm-7">
+        <div class="border" style="border-radius: 10px">
+            <label class="p-1 pe-2 m-2 border font-weight-bold text-primary"
+                   style="font-size: 1.5rem; border-radius: 15px; background: greenyellow">
+                <img src="../static/img/logo_book.png" class="m-1"
+                     width="35"/>Book Store</label>
+            <div class="row ms-0 m-2">
+                <div class="m-1 d-flex w-100 col-lg-12">
+                    <form method="get" class="d-flex">
+                        <input class="form-control" type="text" placeholder="Nhập từ khóa..." name="kw" id="kw"/>
+                        <button class="btn btn-primary icon ms-1" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                    <form method="get" action="">
+                        <button class="btn btn-primary icon ms-1" type="submit"><i class="fa-solid fa-qrcode"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% load humanize %}
+            <div class="d-flex justify-content-center flex-wrap row">
+                {% for b in books %}
+                <div class="card m-1 col-lg-2 col-md-3 col-sm-5">
+                    <div>
+                        <img title="{{ b.name }}" class="card-img-top" src="{{ b.image }}"
+                             alt="Card image"/>
+                    </div>
+                    <div class="card-body p-0 pt-2">
+                        <h4 title="{{ b.name }}" class="card-title w-100"
+                            style="font-size: 1.25rem">{{ b.name }}</h4>
+                        <p title="{{ b.price|intcomma }} VNĐ" style="font-size: .9rem"
+                           class="card-text">{{ b.price|intcomma }} VNĐ</p>
+                    </div>
+                    <div class="card-footer w-100 d-flex justify-content-center">
+                        <button class="btn btn-info text-white" type="button"
+                           onclick="addToOrderList('{{ b.id }}', '{{ b.name }}', '{{ b.price }}')">Thêm</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-5">
+        {% if user.is_authenticated %}
+
+        <div class="border" style="border-radius: 10px">
+            <div class="d-flex flex-wrap">
+                <label class="d-block w-100 p-2 bg-blue text-white bg-primary"
+                       style="font-size: 1.25rem; border-radius: 10px 10px 0 0">Thông tin</label>
+                <h6 class="m-2 mb-1 w-100">Họ tên: <span>
+                        {% if user.first_name %}
+                            {{ user.first_name }} {{ user.last_name }}
+                        {% else %}
+                            {{ user.name }}
+                        {% endif %}</span></h6>
+                <h6 class="m-2 w-100">Ca làm: <span>1</span></h6>
+                <a class="btn btn-primary" style="margin: .5rem auto" href="/sales/logout/">Đăng xuất</a>
+            </div>
+        </div>
+        <div class="border mt-1" style="border-radius: 10px">
+            <label class="d-block w-100 p-2 bg-blue text-white bg-primary"
+                   style="font-size: 1.25rem; border-radius: 10px 10px 0 0">Đơn mua</label>
+            <form method="post" action="/sale/invoice/" onsubmit="return customerValidate();">
+                {% csrf_token %}
+
+                <table class="table" style="width: 100%">
+                    <tr>
+                        <td><h6 class="p-1">Tên khách hàng</h6></td>
+                        <td colspan="2">
+                            <select class="form-control" name="customer" id="customer">
+                                <option value="0" selected>(Annoymous)</option>
+                                {% for c in customers %}
+                                {% if c.id != user.id %}
+                                <option value="{{ c.id }}">{{ c.first_name }} {{ c.last_name }}
+                                </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    {% for i, c in sale_cart.items %}
+                    <tr id="cart{{ c.id }}" style="">
+                        <td>{{ c.name }}</td>
+                        <td>
+                            <input type="number" value="{{ c.quantity }}"
+                                   onblur="updateOrderList('{{ c.id }}', this)"
+                                   class="form-control" min="0" max="{{ c.max_quantity }}"/>
+                        </td>
+                        <td>{{ c.price|intcomma }} VNĐ</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td>
+                            <h6>Số lượng</h6>
+                            <h6>Thành tiền</h6>
+                        </td>
+                        <td colspan="2" class="text-end">
+                            <h6 class="cart-counter">{{ total_quantity }} sản phẩm</h6>
+                            <h6 class="cart-amount">{{ total_amount|intcomma }} VNĐ</h6>
+                        </td>
+                    </tr>
+
+                    {% if sale_cart %}
+                    <tr>
+                        <td colspan="3" class="text-center m-1 w-100">
+                            <button class="btn btn-danger" onclick="exportReceipt()" type="button">In hóa đơn
+                            </button>
+                            <button class="btn btn-primary" type="submit">Tạo hóa đơn</button>
+                        </td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </form>
+        </div>
+        {% else %}
+        <div class="border" style="border-radius: 10px">
+            <form class="was-validated d-flex justify-content-center flex-wrap" method="post"
+                  action="/sales/login/">
+                <label class="d-block w-100 p-2 bg-blue text-white"
+                       style="font-size: 1.25rem; border-radius: 10px 10px 0 0">Đăng nhập</label>
+                <input type="text" class="form-control m-2 mt-3" placeholder="Tên tài khoản..."
+                       name="username"
+                       required/>
+                <input type="password" class="form-control m-2" placeholder="Mật khẩu..."
+                       name="password" required/>
+                {% if err_msg %}
+                <span class="text-danger" style="font-size: .75rem">
+                            Sai tên tài khoản hoặc mật khẩu. Vui lòng nhập lại.
+                        </span>
+                {% endif %}
+                <button class="btn btn-primary m-2" type="submit">Đăng nhập</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function customerValidate() {
+        var customer = document.getElementById('customer');
+        if (customer.value === '0'){
+            alert('Chọn tên người dùng khác');
+            return false;
+        }
+        return true;
+    }
+</script>
+
+</body>
+</html>

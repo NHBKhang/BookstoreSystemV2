@@ -162,7 +162,6 @@ def add_to_cart(request):
         if id in cart:  # sp da co trong gio
             cart[id]['quantity'] += 1
         else:  # san pham chua co trong gio
-            print(data.get("discount"))
             cart[id] = {
                 "id": id,
                 "name": data.get("name"),

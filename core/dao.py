@@ -187,3 +187,17 @@ def update_user(id, first_name, last_name, birthday, gender, phone, email, addre
     except Exception as e:
         print(e)
         return False
+
+
+def get_users():
+    return User.objects.all()
+
+
+def save_receipt_from_request(request, cart, customer_id):
+    if cart:
+        r = Receipt.objects.create(customer_user_id=customer_id, staff_user=request.user, shipping_fee=0)
+
+        for i, c in cart.items():
+            ReceiptDetails.objects.create(receipt=r, quantity=c['quantity'], price=c['price'], book_id=c['id'])
+
+        return r

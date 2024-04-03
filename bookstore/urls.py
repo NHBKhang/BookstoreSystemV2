@@ -34,6 +34,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('', include('core.urls')),
+    path('sale/', include('sale.urls')),
     path('admin/', admin.site.urls),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'^redoc/$',
