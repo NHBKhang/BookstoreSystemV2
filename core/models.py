@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser
 from cloudinary.models import CloudinaryField
 from django_enumfield import enum
 from django.core.validators import MaxValueValidator, MinValueValidator
+import qrcode, os
+from io import BytesIO
+from django.core.files import File
 
 
 class Gender(enum.Enum):
@@ -58,9 +61,26 @@ class Book(models.Model):
     categories = models.ManyToManyField(Category, related_name='books')
     authors = models.ManyToManyField(Author, related_name='books')
     inventories = models.ManyToManyField(Inventory, through='Book_Inventories', related_name='books')
+    qr_code = models.ImageField(upload_to='data/qr_codes', blank=True)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.qr_code:
+            os.remove(self.qr_code.path)
+
+        qr_content = str({
+            "id": self.id,
+            "name": self.name,
+            "price": self.price
+        })
+        qr = qrcode.make(qr_content)
+        qr_image_io = BytesIO()
+        qr.save(qr_image_io, 'JPEG')
+        qr_image_io.seek(0)
+        self.qr_code.save(f'qr_code_{self.pk}.jpg', File(qr_image_io), save=False)
+        super().save(*args, **kwargs)
 
 
 class Book_Inventories(models.Model):

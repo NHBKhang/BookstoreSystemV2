@@ -34,10 +34,9 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </form>
-                    <form method="get" action="">
-                        <button class="btn btn-primary icon ms-1" type="submit"><i class="fa-solid fa-qrcode"></i>
-                        </button>
-                    </form>
+                    <a class="btn btn-primary icon ms-1" type="submit" href="/sale/api/scan/">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </a>
                 </div>
             </div>
             {% load humanize %}
@@ -56,7 +55,8 @@
                     </div>
                     <div class="card-footer w-100 d-flex justify-content-center">
                         <button class="btn btn-info text-white" type="button"
-                           onclick="addToOrderList('{{ b.id }}', '{{ b.name }}', '{{ b.price }}')">Thêm</button>
+                                onclick="addToOrderList('{{ b.id }}', '{{ b.name }}', '{{ b.price }}')">Thêm
+                        </button>
                     </div>
                 </div>
                 {% endfor %}
@@ -77,7 +77,7 @@
                             {{ user.name }}
                         {% endif %}</span></h6>
                 <h6 class="m-2 w-100">Ca làm: <span>1</span></h6>
-                <a class="btn btn-primary" style="margin: .5rem auto" href="/sales/logout/">Đăng xuất</a>
+                <a class="btn btn-primary" style="margin: .5rem auto" href="/sale/logout/">Đăng xuất</a>
             </div>
         </div>
         <div class="border mt-1" style="border-radius: 10px">
@@ -136,20 +136,22 @@
             </form>
         </div>
         {% else %}
-        <div class="border" style="border-radius: 10px">
-            <form class="was-validated d-flex justify-content-center flex-wrap" method="post"
-                  action="/sales/login/">
-                <label class="d-block w-100 p-2 bg-blue text-white"
+        <div class="border" style="border-radius: 10px; background-color: whitesmoke">
+            <form class="was-validated d-inline-flex justify-content-center flex-wrap" method="post"
+                  action="/sale/login/">
+                {% csrf_token %}
+
+                <label class="d-block w-100 p-2 bg-blue text-white bg-primary"
                        style="font-size: 1.25rem; border-radius: 10px 10px 0 0">Đăng nhập</label>
                 <input type="text" class="form-control m-2 mt-3" placeholder="Tên tài khoản..."
                        name="username"
                        required/>
                 <input type="password" class="form-control m-2" placeholder="Mật khẩu..."
                        name="password" required/>
-                {% if err_msg %}
-                <span class="text-danger" style="font-size: .75rem">
-                            Sai tên tài khoản hoặc mật khẩu. Vui lòng nhập lại.
-                        </span>
+                {% if request.GET.err_msg %}
+                <h6 class="text-danger w-100 text-center" style="font-size: .75rem">
+                    Tài khoản không hợp lệ.
+                </h6>
                 {% endif %}
                 <button class="btn btn-primary m-2" type="submit">Đăng nhập</button>
             </form>
@@ -161,7 +163,7 @@
 <script>
     function customerValidate() {
         var customer = document.getElementById('customer');
-        if (customer.value === '0'){
+        if (customer.value === '0') {
             alert('Chọn tên người dùng khác');
             return false;
         }

@@ -52,6 +52,6 @@
     + Pythonanywhere: Nothing here
     + GG Drive: https://drive.google.com/drive/folders/1iLbAZDfFQ2MM5kR3MuzpbPS_KPjXvou_?usp=drive_link
   - Ngôn ngữ: Html, Css, Javascript, Python
-  - Framwork: Flask
+  - Framwork: Django, REST API
   - Tools: MySQL Workbench, PyCharm
 

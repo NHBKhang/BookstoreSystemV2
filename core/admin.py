@@ -38,12 +38,16 @@ class BookAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'description', 'price', 'active']
     search_fields = ['name', 'description']
     list_filter = ['id', 'name', 'published_date']
-    readonly_fields = ['my_image']
+    readonly_fields = ['my_image', 'my_qr_code']
     form = BookForm
 
     def my_image(self, book):
         if book.image:
             return mark_safe(f"<img width='200' src='{book.image}' />")
+
+    def my_qr_code(self, book):
+        if book.qr_code:
+            return mark_safe(f"<img width='200' src='../../../../../static/{book.qr_code}' />")
 
 
 class OrderAdmin(admin.ModelAdmin):
