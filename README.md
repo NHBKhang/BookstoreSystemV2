@@ -29,6 +29,7 @@
     - *python manage.py createsuperuser* tạo tài khoản admin 
     - *django-admin startproject <project_name>* tạo project django mới
     - *python manage.py startapp <app_name>* tạo app mới
+    - *python manage.py test* kiểm thử phần mềm
 
 * Notes: 
   - 

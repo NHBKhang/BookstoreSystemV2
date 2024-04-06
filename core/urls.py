@@ -14,7 +14,7 @@ r.register('books', views.BookViewSet, basename='books')
 
 urlpatterns = [
     path('api/', include(r.urls)),
-    path('', views.index, name='home'),
+    path('', views.index, name='index'),
     path('books/', views.pages, name='books'),
     path('books/<int:book_id>/', views.details, name='details'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
