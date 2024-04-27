@@ -68,7 +68,7 @@ class Book(models.Model):
 
     def save(self, *args, **kwargs):
         if self.qr_code == '':
-            return
+            super().save(*args, **kwargs)
 
         if self.qr_code:
             os.remove(self.qr_code.path)
