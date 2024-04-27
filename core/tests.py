@@ -44,9 +44,9 @@ class LoginTestCase(TestCase):
 
 class BookSearchTestCase(TestCase):
     def setUp(self):
-        self.book1 = Book.objects.create(name='The Wolf Gift')
-        self.book2 = Book.objects.create(name='Sheets')
-        self.book3 = Book.objects.create(name='Elon Musk')
+        self.book1 = Book.objects.create(name='The Wolf Gift', qr_code='')
+        self.book2 = Book.objects.create(name='Sheets', qr_code='')
+        self.book3 = Book.objects.create(name='Elon Musk', qr_code='')
 
     def test_search_books_by_kw(self):
         keyword = 'Wolf'

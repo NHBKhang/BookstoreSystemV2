@@ -61,12 +61,15 @@ class Book(models.Model):
     categories = models.ManyToManyField(Category, related_name='books')
     authors = models.ManyToManyField(Author, related_name='books')
     inventories = models.ManyToManyField(Inventory, through='Book_Inventories', related_name='books')
-    qr_code = models.ImageField(upload_to='data/qr_codes', blank=True)
+    qr_code = models.ImageField(upload_to='data/qr_codes', blank=True, null=True)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
+        if self.qr_code == '':
+            return
+
         if self.qr_code:
             os.remove(self.qr_code.path)
 
