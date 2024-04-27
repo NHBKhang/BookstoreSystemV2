@@ -24,6 +24,11 @@
     - Chạy project: *python manage.py runserver*
 
 
+* **Kiểm thử project:**
+    -
+    - Chạy lệnh *python manage.py test* để chạy tất cả các test case có sẵn
+  
+
 * **Các lệnh khác:**
     - 
     - *python manage.py createsuperuser* tạo tài khoản admin 

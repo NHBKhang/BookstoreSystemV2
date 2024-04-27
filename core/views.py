@@ -15,7 +15,7 @@ from django.contrib import messages
 from core.mail import Mail
 
 
-class CategoryViewSet(viewsets.ViewSet, generics.ListCreateAPIView, generics.RetrieveUpdateDestroyAPIView):
+class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = serializers.CategorySerializer
 
@@ -54,17 +54,6 @@ class BookViewSet(viewsets.ViewSet, generics.ListAPIView):
 
         return queryset
 
-    @action(methods=['get'], url_path='lessons', detail=True)
-    def get_lessons(self, request, pk):
-        lessons = self.get_object().lesson_set.filter(active=True)
-
-        q = request.query_params.get('q')
-        if q:
-            lessons = lessons.filter(subject__icontains=q)
-
-        return Response(serializers.LessonSerializer(lessons, many=True).data,
-                        status=status.HTTP_200_OK)
-
 
 class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
     queryset = User.objects.filter(is_active=True)
@@ -88,7 +77,8 @@ def pages(request):
 
     return render(request, 'pages.html', {
         'books': books,
-        'pages': range(1, math.ceil(dao.books_count(cate_id=cate_id, kw=kw) / settings.PAGE_SIZE) + 1)
+        'pages': range(1, math.ceil(dao.books_count(cate_id=cate_id, kw=kw)
+                                    / settings.PAGE_SIZE) + 1)
     })
 
 
