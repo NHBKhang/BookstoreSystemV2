@@ -10,8 +10,7 @@ def count_cart(request):
         for i, c in cart.items():
             total_quantity += int(c['quantity'])
             total_amount += int(c['quantity']) * int(c['price'])
-
     return {
-        "total_amount": total_amount,
-        "total_quantity": total_quantity
+        "sale_total_amount": total_amount,
+        "sale_total_quantity": total_quantity
     }

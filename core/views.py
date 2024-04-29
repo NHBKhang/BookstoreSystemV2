@@ -147,7 +147,8 @@ def add_to_cart(request):
         cart = request.session.get(settings.CART_KEY, {})
 
         data = json.loads(request.body.decode('utf-8'))
-        id = str(data.get("id"))
+        id = data.get("id")
+        print(data)
 
         if id in cart:  # sp da co trong gio
             cart[id]['quantity'] += 1

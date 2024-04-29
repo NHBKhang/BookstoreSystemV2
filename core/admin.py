@@ -8,7 +8,7 @@ from core import dao
 from django.contrib.auth.models import Group
 
 
-class AppAdminSite(admin.AdminSite):
+class MyAdminSite(admin.AdminSite):
     site_header = 'Bookstore Administration'
     site_title = 'Bookstore Administration'
 
@@ -24,14 +24,12 @@ class AppAdminSite(admin.AdminSite):
         })
 
     def books_revenue_view(self, request):
-        for c in dao.books_revenue():
-            print(c[1])
         return TemplateResponse(request, 'admin/books_revenue.html', {
             'stats': dao.books_revenue()
         })
 
 
-admin.site = AppAdminSite(name='myapp')
+admin.site = MyAdminSite(name='myapp')
 
 
 class BookAdmin(admin.ModelAdmin):
