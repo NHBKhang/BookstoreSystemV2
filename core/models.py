@@ -6,6 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import qrcode, os
 from io import BytesIO
 from django.core.files import File
+from django.utils import timezone
 
 
 class Gender(enum.Enum):
@@ -151,6 +152,11 @@ class Order(ItemBase):
 
     def __str__(self):
         return 'Đơn hàng ' + str(self.id)
+
+    def order_is_cancel(self):
+        if (timezone.now() - self.created_date).total_seconds() > (48 * 3600) and self.status == OrderStatus.PENDING:
+            self.status = OrderStatus.CANCELLED
+            super().save()
 
 
 class OrderDetails(ItemDetailsBase):

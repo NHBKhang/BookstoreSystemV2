@@ -6,7 +6,7 @@
 
 <div class="container">
     <h3 class="m-3">Thanh toán</h3>
-    <form action="/api/pay/" method="post" class="col-lg-12">
+    <form method="post" action="/api/pay/" class="col-lg-12">
         {% csrf_token %}
 
         <div class="row">
@@ -231,11 +231,11 @@
     </form>
 </div>
 
+<script type="text/javascript" src="/../static/js/payment.js"></script>
 <style>
     a.text-primary:hover {
         text-decoration: underline;
     }
 </style>
-<script src="../static/js/payment.js" rel="stylesheet" type="text/javascript"></script>
 
 {% endblock %}

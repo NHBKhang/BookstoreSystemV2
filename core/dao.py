@@ -1,3 +1,5 @@
+import datetime
+
 from core.models import Book, Comment, Order, OrderDetails, Receipt, ReceiptDetails, User, Transaction, Category
 from bookstore import settings
 from django.db.models import Count
@@ -60,6 +62,7 @@ def get_orders_by_user_id(user_id):
         'total': 0
     }
     for i, o in enumerate(Order.objects.filter(customer_user_id=user_id).all()):
+        o.order_is_cancel()
         details = OrderDetails.objects.filter(order_id=o.id).all()
 
         orders.append({

@@ -35,8 +35,17 @@
                 </div>
             </a>
             <div class="card-footer d-flex justify-content-center w-100 h-100">
+                {% if b.discount.is_active %}
+                {% load mathfilters %}
+                {% with discount=b.price|mul:b.discount.amount %}
+                {% with discount_price=b.price|sub:discount|floatformat %}
+                <a href="" onclick="addToCart('{{ b.id }}', '{{ b.name }}', '{{ discount_price }}')"
+                   class="btn btn-danger">&#128722; Thêm vào giỏ</a>
+                {% endwith %}{% endwith %}
+                {% else %}
                 <a href="" onclick="addToCart('{{ b.id }}', '{{ b.name }}', '{{ b.price }}')"
                    class="btn btn-danger">&#128722; Thêm vào giỏ</a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

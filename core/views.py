@@ -254,10 +254,10 @@ def pay(request):
             del request.session[settings.CART_KEY]
 
             if int(method) == 3:
-                return redirect(utils.pay_with_vnpay(request, order))
+                return redirect(utils.pay_with_vnpay(request, order), kwargs=JsonResponse({"status": 200}))
 
             elif int(method) == 4:
-                return redirect('/my_orders/' + str(order.id))
+                return redirect('/my_orders/' + str(order.id), kwargs=JsonResponse({"status": 200}))
 
 
 def vnpay_return(request):

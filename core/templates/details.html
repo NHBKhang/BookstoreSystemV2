@@ -51,8 +51,10 @@
             <h3 title="{{ book.price|intcomma }}"
                 class="text-danger">{{ book.price|intcomma }} VNĐ</h3>
             <div class="d-flex mt-3">
-                <a href="" onclick=""
-                   class="btn btn-primary m-1" style="font-size: 1.1rem">💳 Mua sách</a>
+                <button onclick="payDirect('{{ book.id }}', '{{ book.name }}', '{{ book.price }}')"
+                        type="button"
+                        class="btn btn-primary m-1" style="font-size: 1.1rem">💳 Mua sách
+                </button>
                 <a onclick="addToCart('{{ book.id }}', '{{ book.name }}', '{{ book.price }}')"
                    class="btn btn-danger m-1" href="" style="font-size: 1.1rem">&#128722; Thêm vào giỏ</a>
             </div>
@@ -97,7 +99,6 @@
         color: #1DA1F2;
     }
 </style>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
 

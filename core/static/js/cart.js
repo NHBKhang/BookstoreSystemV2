@@ -16,11 +16,15 @@ function addToCart(id, name, price) {
         }
         throw new Error('Network response was not ok.');
     }).then(function (data) {
+        location.reload();
+
         let items = document.getElementsByClassName('cart-counter');
         for (let item of items)
             item.innerText = data.total_quantity;
 
-        location.reload()
+        let d2 = document.getElementsByClassName('cart-amount')
+        for (let i = 0; i < d2.length; i++)
+            d2[i].innerText = data.total_amount.toLocaleString("en-US") + ' VNĐ'
     })
 }
 
