@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from core import serializers, paginators, dao
 from core.models import Category, User, Author, Inventory, Book, Book_Inventories, Gender, OrderStatus
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 import math
 import json
 from bookstore import settings
@@ -13,6 +13,7 @@ from core.utils import context_processors as cp
 from django.contrib.auth import login
 from core.utils import utils
 from django.contrib import messages
+from django.urls import reverse
 from core.mail import Mail
 from urllib.parse import parse_qs
 
@@ -322,11 +323,15 @@ def profile(request):
         phone = request.POST.get('phone')
         email = request.POST.get('email')
         address = request.POST.get('address')
-        avatar = request.POST.get('avatar')
+        avatar = request.FILES['avatar'] if request.POST.get('avatar') else None
 
         if dao.update_user(request.user.id, first_name, last_name, birthday, Gender(int(gender)), phone, email,
                            address, avatar):
-            return redirect('profile')
+            messages.success(request, 'Cập nhật thành công!')
+        else:
+            messages.error(request, 'Cập nhật thất bại!')
+
+        return HttpResponseRedirect(reverse('profile'))
 
     return render(request, 'profile.html', {
         'stat': dao.profile_stats(request.user)

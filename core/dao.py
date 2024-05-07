@@ -179,12 +179,14 @@ def profile_stats(user):
     }
 
 
-def update_user(id, first_name, last_name, birthday, gender, phone, email, address, avatar):
+def update_user(id, first_name, last_name, birthday, gender, phone, email, address, avatar = None):
     try:
         user = User.objects.filter(pk=id)
 
         user.update(first_name=first_name, last_name=last_name, birthday=birthday, gender=gender, phone=phone,
-                    email=email, address=address, avatar=cloudinary.uploader.upload(avatar)['secure_url'])
+                    email=email, address=address)
+        if avatar:
+            user.update(avatar=cloudinary.uploader.upload(avatar)['secure_url'])
 
         return True
     except Exception as e:

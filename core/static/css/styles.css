@@ -110,6 +110,7 @@ html {
     height: 35px;
     margin: 0 1px;
     padding: 0;
+    border-radius: 50%;
 }
 
 .bg-blue {

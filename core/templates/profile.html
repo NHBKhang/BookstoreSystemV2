@@ -10,7 +10,7 @@
     </div>
     <div class="row">
         <div class="col-md-3"><!--left col-->
-            <form class="form" action="/profile/" method="post" id="registrationForm">
+            <form class="form" action="/profile/" method="post" id="registrationForm" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="text-center">
@@ -119,6 +119,18 @@
                                    title="enter a location" required>
                         </div>
                     </div>
+
+                    {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                    <div class="alert alert-success mt-3" role="alert">
+                        {{ message }}
+                    </div>
+                    {% elif message.tags == 'error' %}
+                    <div class="alert alert-danger mt-3" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
 
                     <div class="form-group">
                         <div class="col-xs-12">
