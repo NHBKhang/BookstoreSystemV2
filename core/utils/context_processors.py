@@ -11,7 +11,7 @@ def categories(request):
 
 
 def count_cart(request):
-    total_amount, total_quantity = 0, 0
+    total_amount = total_quantity = 0
 
     cart = request.session.get(settings.CART_KEY)
 
@@ -19,7 +19,7 @@ def count_cart(request):
         for i, c in cart.items():
             total_quantity += int(c['quantity'])
             total_amount += int(c['quantity']) * int(c['price'])
-    print(total_amount, total_quantity)
+
     return {
         "total_amount": total_amount,
         "total_quantity": total_quantity

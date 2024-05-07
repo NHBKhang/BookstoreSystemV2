@@ -71,6 +71,7 @@
                         <div class="col-xs-6">
                             <label for="birthday" class="m-1"><h4>Ngày sinh</h4></label>
                             <input type="date" class="form-control" name="birthday" id="birthday"
+                                   max="{{ today|date:'Y-m-d' }}"
                                    value="{{ user.birthday|date:'Y-m-d' }}" title="enter your birthday" required>
                         </div>
                     </div>
@@ -94,8 +95,9 @@
                     <div class="form-group">
                         <div class="col-xs-6">
                             <label for="phone" class="m-1"><h4>Số điện thoại</h4></label>
-                            <input type="text" class="form-control" name="phone" id="phone"
+                            <input type="tel" class="form-control" name="phone" id="phone"
                                    placeholder="{{ user.phone }}" value="{{ user.phone }}"
+                                   pattern="(?:7|0\d|\+94\d)\d{8}"
                                    title="enter your phone number if any." required>
                         </div>
                     </div>

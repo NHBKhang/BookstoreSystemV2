@@ -22,7 +22,7 @@ function addToOrderList(id, name, price) {
 
 function updateOrderList(bookId, obj) {
     if (parseInt(obj.value) === 0) {
-        if (confirm("Bạn chắc chắn xóa không?") == true) {
+        if (confirm("Bạn chắc chắn xóa không?") === true) {
             fetch(`/sale/api/cart/${bookId}/`, {
                 method: "delete"
             }).then(res => res.json()).then(data => {

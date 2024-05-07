@@ -24,7 +24,7 @@ function spinner(status = "block") {
 }
 
 function loadComments(bookId) {
-    spinner()
+    spinner();
     fetch(`/api/books/${bookId}/comments/`)
         .then(res => {
             return res.json()
@@ -42,29 +42,15 @@ function loadComments(bookId) {
 }
 
 function addComment(bookId) {
-    spinner()
+    spinner();
     fetch(`/api/books/${bookId}/comments/`, {
         method: "post",
         body: JSON.stringify({
-            "content": document.getElementById("comment").value
+            "content": document.getElementById("content").value
         }),
         headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": () => {
-                var name = 'csrftoken';
-                var cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
+            "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
         }
     }).then((res) => res.json()).then((data) => {
         spinner("none")
@@ -79,4 +65,3 @@ function addComment(bookId) {
             alert("Hệ thống bị lỗi!")
     }).catch(err => console.info(err)) // js promise
 }
-

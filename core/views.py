@@ -6,13 +6,15 @@ from core import serializers, paginators, dao
 from core.models import Category, User, Author, Inventory, Book, Book_Inventories, Gender, OrderStatus
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
-import math, json
+import math
+import json
 from bookstore import settings
 from core.utils import context_processors as cp
 from django.contrib.auth import login
 from core.utils import utils
 from django.contrib import messages
 from core.mail import Mail
+from urllib.parse import parse_qs
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -148,7 +150,6 @@ def add_to_cart(request):
 
         data = json.loads(request.body.decode('utf-8'))
         id = data.get("id")
-        print(data)
 
         if id in cart:  # sp da co trong gio
             cart[id]['quantity'] += 1
@@ -188,12 +189,10 @@ def payment(request):
 
 def comments(request, book_id):
     if request.method == 'POST':
-        comment = json.loads(request.body.decode('utf-8'))
-
-        if comment['content'] == '':
-            return JsonResponse({'status': 501})
-
         try:
+            comment = json.loads(request.body.decode('utf-8'))
+            if comment['content'] == '':
+                return JsonResponse({'status': 501})
             c = dao.save_comment(book_id=book_id, content=comment['content'], user_id=request.user.id)
         except Exception as e:
             print(e)
@@ -211,7 +210,7 @@ def comments(request, book_id):
                     'avatar': c.user.avatar.url
                 }
             }
-        })
+        }, safe=False)
     else:
         data = []
         for c in dao.get_comments(book_id=book_id):

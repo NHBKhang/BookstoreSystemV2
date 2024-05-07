@@ -14,10 +14,11 @@
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/76334962e6.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="../../static/css/styles.css">
-    <script type="text/javascript" src="../../static/js/scripts.js"></script>
-    <script type="text/javascript" src="../../static/js/cart.js"></script>
-    <script type="text/javascript" src="../../static/js/details.js"></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/styles.css' %}">
+    <script type="text/javascript" src="{% static 'js/scripts.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+    <script src="{% static 'js/details.js' %}"></script>
 </head>
 <body>
 

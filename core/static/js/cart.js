@@ -41,7 +41,7 @@ function updateCart(bookId, obj) {
     }).then(res => res.json()).then(data => {
         let d = document.getElementsByClassName('cart-counter')
         for (let i = 0; i < d.length; i++)
-            d[i].innerText = data.total_quantity
+            d[i].innerText = data.total_quantity;
 
         let d2 = document.getElementsByClassName('cart-amount')
         for (let i = 0; i < d2.length; i++)
@@ -52,7 +52,7 @@ function updateCart(bookId, obj) {
 }
 
 function deleteCart(bookId) {
-    if (confirm("Bạn chắc chắn xóa không?") == true) {
+    if (confirm("Bạn chắc chắn xóa không?") === true) {
         fetch(`/api/cart/${bookId}/`, {
             method: "delete",
             headers: {

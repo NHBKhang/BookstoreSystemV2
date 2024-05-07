@@ -42,8 +42,8 @@
             <div class="d-flex mt-3">
                 <a href="" onclick=""
                    class="btn btn-primary m-1" style="font-size: 1.1rem">💳 Mua sách</a>
-                <a onclick="addToCart('{{ book.id }}', '{{ book.name }}', '{{ discount_price }}')"
-                   class="btn btn-danger m-1" href="" style="font-size: 1.1rem">&#128722; Thêm vào giỏ</a>
+                <a href="" onclick="addToCart('{{ book.id }}', '{{ book.name }}', '{{ discount_price }}')"
+                   class="btn btn-danger m-1" style="font-size: 1.1rem">&#128722; Thêm vào giỏ</a>
             </div>
             {% endwith %}{% endwith %}
 
@@ -55,8 +55,8 @@
                         type="button"
                         class="btn btn-primary m-1" style="font-size: 1.1rem">💳 Mua sách
                 </button>
-                <a onclick="addToCart('{{ book.id }}', '{{ book.name }}', '{{ book.price }}')"
-                   class="btn btn-danger m-1" href="" style="font-size: 1.1rem">&#128722; Thêm vào giỏ</a>
+                <a href="" onclick="addToCart('{{ book.id }}', '{{ book.name }}', '{{ book.price }}')"
+                   class="btn btn-danger m-1" style="font-size: 1.1rem">&#128722; Thêm vào giỏ</a>
             </div>
             {% endif %}
 
@@ -66,15 +66,15 @@
 <div class="m-2">
     <hr/>
     {% if user.is_authenticated %}
-    <div class="m-1">
-                    <textarea class="form-control" rows="3" id="comment" placeholder="Nội dung bình luận..."
-                              name="content" value=""></textarea>
-        <button type="submit" class="btn btn-success mt-1" onclick="addComment('{{ book.id }}')">Bình luận
-        </button>
-    </div>
+<!--    <form class="m-1" method="post" action="/api/books/{{ book.id }}/comments/">-->
+<!--        {% csrf_token %}-->
+        <textarea class="form-control" rows="3" id="content" placeholder="Nội dung bình luận..."
+                  name="content"></textarea>
+        <button onclick="addComment('{{ book.id }}')" class="btn btn-success mt-1">Bình luận</button>
+<!--    </form>-->
     {% else %}
     <p class=" ms-5">Vui lòng
-        <a class="text-info lg" href="/login?next=/books/{{ book.id }}">đăng nhập</a> để bình luận!</p>
+        <a class="text-info lg" href="/login?next=/books/{{ book.id }}/">đăng nhập</a> để bình luận!</p>
     {% endif %}
     <hr/>
 
@@ -99,9 +99,9 @@
         color: #1DA1F2;
     }
 </style>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
-
 <script>
     window.onload = () => {
         loadComments('{{ book.id }}')
