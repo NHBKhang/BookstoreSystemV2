@@ -35,6 +35,7 @@
     - *django-admin startproject <project_name>* tạo project django mới
     - *python manage.py startapp <app_name>* tạo app mới
     - *python manage.py test* kiểm thử phần mềm
+    - *python manage.py collectstatic* lấy các thành phần tĩnh
 
 * Notes: 
   - 
