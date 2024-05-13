@@ -69,7 +69,7 @@ class Book(models.Model):
 
     def save(self, *args, **kwargs):
         if self.qr_code == '':
-            super().save(*args, **kwargs)
+            return super().save(*args, **kwargs)
 
         if self.qr_code:
             os.remove(self.qr_code.path)
@@ -186,6 +186,21 @@ class ReceiptDetails(ItemDetailsBase):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='receipt_details')
 
 
+class DiscountQuerySet(models.QuerySet):
+    def active(self):
+        now = timezone.now()
+        return self.filter(valid_from__lte=now, valid_to__gte=now, is_active=True)
+
+
+class DiscountManager(models.Manager):
+    def get_queryset(self):
+        queryset = DiscountQuerySet(self.model)
+        for discount in queryset.all():
+            discount.set_active()
+
+        return queryset
+
+
 class Discount(models.Model):
     code = models.CharField(max_length=20, null=False, blank=False)
     amount = models.DecimalField(max_digits=10, decimal_places=2,
@@ -201,3 +216,9 @@ class Discount(models.Model):
     def is_valid(self):
         now = timezone.now()
         return self.valid_from <= now <= self.valid_to
+
+    def set_active(self):
+        self.is_active = self.is_valid()
+        self.save()
+
+    objects = DiscountManager()

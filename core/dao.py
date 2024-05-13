@@ -13,8 +13,6 @@ def get_books(kw=None, cate_id=None, page=None, desc=True, limit=None):
 
     if desc:
         books = books.order_by('-id')
-    if limit:
-        return books.all()[:limit]
     if kw:
         books = books.filter(name__icontains=kw)
     if cate_id:
@@ -24,8 +22,10 @@ def get_books(kw=None, cate_id=None, page=None, desc=True, limit=None):
         page_size = settings.PAGE_SIZE
         start = (page - 1) * page_size
         return books[start:start + page_size]
-
-    return books.all()
+    if limit:
+        return books.all()[:limit]
+    else:
+        return books.all()
 
 
 def books_count(cate_id=None, kw=None):

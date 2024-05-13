@@ -32,11 +32,16 @@ class MyAdminSite(admin.AdminSite):
 admin.site = MyAdminSite(name='myapp')
 
 
+class DiscountInline(admin.TabularInline):
+    model = Discount
+
+
 class BookAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'description', 'price', 'active']
     search_fields = ['name', 'description']
     list_filter = ['id', 'name', 'published_date']
     readonly_fields = ['my_image', 'my_qr_code']
+    inlines = [DiscountInline]
     form = BookForm
 
     def my_image(self, book):
