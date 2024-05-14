@@ -106,6 +106,9 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.user.id} - {self.book.name}'
+
 
 class Transaction(models.Model):
     transaction_id = models.BigIntegerField(null=False, blank=False)
@@ -184,6 +187,13 @@ class Receipt(ItemBase):
 class ReceiptDetails(ItemDetailsBase):
     receipt = models.ForeignKey(Receipt, on_delete=models.CASCADE, related_name='receipt_details')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='receipt_details')
+
+    def __str__(self):
+        return 'Chi tiết hóa đơn ' + str(self.receipt.id) + ' - ' + str(self.book.name)
+
+    class Meta:
+        verbose_name = "receipt details"
+        verbose_name_plural = "receipt details"
 
 
 class DiscountQuerySet(models.QuerySet):

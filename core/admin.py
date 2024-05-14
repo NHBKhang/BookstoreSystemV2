@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.template.response import TemplateResponse
-from core.models import Author, Category, Inventory, Book, User, Book_Inventories, Order, OrderDetails, Discount
-from core.forms import BookForm, OrderForm
+from core.models import *
+from core.forms import BookForm, OrderForm, ReceiptForm
 from django.utils.html import mark_safe
 from django.urls import path
 from core import dao
@@ -29,11 +29,17 @@ class MyAdminSite(admin.AdminSite):
         })
 
 
-admin.site = MyAdminSite(name='myapp')
+admin_site = MyAdminSite(name='myapp')
 
 
 class DiscountInline(admin.TabularInline):
     model = Discount
+
+
+class InventoryInline(admin.TabularInline):
+    model = Book_Inventories
+    min_num = 1
+    extra = 1
 
 
 class BookAdmin(admin.ModelAdmin):
@@ -41,7 +47,7 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     list_filter = ['id', 'name', 'published_date']
     readonly_fields = ['my_image', 'my_qr_code']
-    inlines = [DiscountInline]
+    inlines = [InventoryInline, DiscountInline]
     form = BookForm
 
     def my_image(self, book):
@@ -53,21 +59,46 @@ class BookAdmin(admin.ModelAdmin):
             return mark_safe(f"<img width='200' src='../../../../../static/{book.qr_code}' />")
 
 
+class OrderDetailsInline(admin.TabularInline):
+    model = OrderDetails
+    min_num = 1
+    extra = 2
+
+
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'tax_fee', 'shipping_fee', 'status', 'customer_user', 'transaction']
     search_fields = ['customer_user', 'transaction']
     list_filter = ['id', 'status']
     readonly_fields = ['customer_user', 'transaction']
     form = OrderForm
+    inlines = [OrderDetailsInline]
 
 
-admin.site.register(Group)
-admin.site.register(User)
-admin.site.register(Category)
-admin.site.register(Author)
-admin.site.register(Inventory)
-admin.site.register(Book_Inventories)
-admin.site.register(Book, BookAdmin)
-admin.site.register(Order, OrderAdmin)
-admin.site.register(OrderDetails)
-admin.site.register(Discount)
+class ReceiptDetailsInline(admin.TabularInline):
+    model = ReceiptDetails
+    min_num = 1
+    extra = 0
+
+
+class ReceiptAdmin(admin.ModelAdmin):
+    list_display = ['id', 'tax_fee', 'shipping_fee', 'customer_user', 'staff_user', 'transaction']
+    search_fields = ['customer_user', 'staff_user', 'transaction']
+    list_filter = ['id']
+    readonly_fields = ['customer_user', 'transaction']
+    form = ReceiptForm
+    inlines = [ReceiptDetailsInline]
+
+
+admin_site.register(Group)
+admin_site.register(User)
+admin_site.register(Category)
+admin_site.register(Author)
+admin_site.register(Inventory)
+admin_site.register(Book_Inventories)
+admin_site.register(Book, BookAdmin)
+admin_site.register(Order, OrderAdmin)
+admin_site.register(OrderDetails)
+admin_site.register(Discount)
+admin_site.register(Comment)
+admin_site.register(Receipt, ReceiptAdmin)
+admin_site.register(ReceiptDetails)
