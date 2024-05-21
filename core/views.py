@@ -131,7 +131,7 @@ def register(request):
 
             login(request, user)
 
-            return redirect('home')
+            return redirect('index')
         except Exception as e:
             return render(request, 'register.html', {
                 'error_msg': e.__str__()})
@@ -140,9 +140,13 @@ def register(request):
 
 
 def cart(request):
-    c = request.session.get('cart', {})
+    cart = request.session.get('cart', {})
+    for id in cart:
+        q = dao.get_quantity(id)
+        if q:
+            cart[id]['max_quantity'] = q.quantity
 
-    return render(request, 'cart.html', {'cart': c})
+    return render(request, 'cart.html', {'cart': cart})
 
 
 def add_to_cart(request):
@@ -335,4 +339,12 @@ def profile(request):
 
     return render(request, 'profile.html', {
         'stat': dao.profile_stats(request.user)
+    })
+
+
+def reorder(request, order_id):
+    order = dao.get_order_by_order_id(order_id)
+
+    return render(request, 'my_order_details.html', {
+        order: order
     })

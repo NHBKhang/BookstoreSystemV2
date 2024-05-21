@@ -1,6 +1,6 @@
 import datetime
 
-from core.models import Book, Comment, Order, OrderDetails, Receipt, ReceiptDetails, User, Transaction, Category
+from core.models import Book, Comment, Order, OrderDetails, Receipt, ReceiptDetails, User, Transaction, Category, Book_Inventories
 from bookstore import settings
 from django.db.models import Count
 from django.db import connection
@@ -206,3 +206,13 @@ def save_receipt_from_request(request, cart, customer_id):
             ReceiptDetails.objects.create(receipt=r, quantity=c['quantity'], price=c['price'], book_id=c['id'])
 
         return r
+
+
+def get_quantity(book_id):
+    return Book_Inventories.objects.filter(book_id=book_id).first()
+
+
+def clone_order(order):
+    return Order.objects.create(order=order)
+
+

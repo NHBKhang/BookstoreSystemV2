@@ -111,7 +111,7 @@
                                        href="/my_orders/{{ o.id }}/">Xem chi tiết đơn hàng</a>
                                     {% if o.status.name == 'DELIVERED' or o.status.name == 'CANCELLED' %}
                                     <a class="text-center d-block border m-0 mt-1 btn-danger text-white"
-                                       href="">Đặt lại đơn hàng</a>
+                                       onclick="reorder('{{ o.id }}')">Đặt lại đơn hàng</a>
                                     {% endif %}
                                 </div>
                             </div>
@@ -183,6 +183,7 @@
     <!-- end row -->
 </div>
 
+{% load static %}
 <link rel="stylesheet" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc="
       href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css"
       crossorigin="anonymous"/>
@@ -196,4 +197,6 @@
         background-color: gold !important;
     }
 </style>
+<script src="{% static 'js/order.js' %}"></script>
+
 {% endblock %}
