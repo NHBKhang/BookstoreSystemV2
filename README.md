@@ -48,7 +48,7 @@
     + Mật khẩu OTP: 123456
   - Tài khoản test VNPAY:
     + Username: nhbkhang12@gmail.com
-    + Password: Khang2003
+    + Password: *********
   - Tài khoản test mail server Ethereal:
     + Email: josh.johnston@ethereal.email
     + Password: eqaUJhQGnhduwAK7CT
